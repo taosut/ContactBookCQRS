@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ContactBookCQRS.Domain\ContactBookCQRS.Domain.csproj" />
+    <ProjectReference Include="..\ContactBookCQRS.Infra.Persistence\ContactBookCQRS.Infra.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>
