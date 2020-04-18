@@ -33,6 +33,12 @@ namespace ContactBookCQRS.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
+            // Checking if contact e-mail is already taken
+            if (null != _contactUnitOfWork.ContactsRepository.GetByEmail(request.Email))
+            {
+                return Task.FromResult(false);
+            }
+
             Contact contact = new Contact(new Guid(), request.Name, request.Email, request.BirthDate);
             _contactUnitOfWork.ContactsRepository.CreateContact(contact);
             _contactUnitOfWork.Commit();
