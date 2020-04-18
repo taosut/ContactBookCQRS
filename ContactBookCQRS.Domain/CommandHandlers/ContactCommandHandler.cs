@@ -1,13 +1,12 @@
-﻿using ContactBookCQRS.Domain.Commands;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using ContactBookCQRS.Domain.Commands;
 using ContactBookCQRS.Domain.Core.Bus;
+using ContactBookCQRS.Domain.Core.Notifications;
 using ContactBookCQRS.Domain.Interfaces;
 using ContactBookCQRS.Domain.Models;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ContactBookCQRS.Domain.CommandHandlers
 {
@@ -36,6 +35,7 @@ namespace ContactBookCQRS.Domain.CommandHandlers
             // Checking if contact e-mail is already taken
             if (null != _contactUnitOfWork.ContactsRepository.GetByEmail(request.Email))
             {
+                _bus.RaiseEvent(new DomainNotification(request.MessageType, "The customer e-mail has already been taken."));
                 return Task.FromResult(false);
             }
 

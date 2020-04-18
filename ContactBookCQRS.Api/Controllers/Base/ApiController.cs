@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ContactBookCQRS.Domain.Core.Bus;
+using ContactBookCQRS.Domain.Core.Notifications;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,16 +11,22 @@ namespace ContactBookCQRS.Api.Controllers.Base
 {
     public abstract class ApiController : ControllerBase
     {
+        private readonly DomainNotificationHandler _notifications;
         private readonly IMediatorHandler _mediator;
 
-        protected ApiController(IMediatorHandler mediator)
+        protected ApiController(
+            INotificationHandler<DomainNotification> notifications,
+            IMediatorHandler mediator)
         {
+            _notifications = (DomainNotificationHandler)notifications;
             _mediator = mediator;
         }
 
+        protected IEnumerable<DomainNotification> Notifications => _notifications.GetNotifications();
+
         protected bool IsValidOperation()
         {
-            return true;
+            return (!_notifications.HasNotifications());
         }
 
         protected new IActionResult Response(object result = null)
@@ -36,7 +43,7 @@ namespace ContactBookCQRS.Api.Controllers.Base
             return BadRequest(new
             {
                 success = false,
-                errors = string.Empty
+                errors = _notifications.GetNotifications().Select(n => n.Value)
             });
         }
 

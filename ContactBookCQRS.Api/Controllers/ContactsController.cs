@@ -2,6 +2,7 @@
 using ContactBookCQRS.Application.Interfaces;
 using ContactBookCQRS.Application.ViewModels;
 using ContactBookCQRS.Domain.Core.Bus;
+using ContactBookCQRS.Domain.Core.Notifications;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +16,8 @@ namespace ContactBookCQRS.Controllers
 
         public ContactsController(
             IContactAppService contactAppService,
-            IMediatorHandler mediator) : base(mediator)
+            INotificationHandler<DomainNotification> notifications,
+            IMediatorHandler mediator) : base(notifications, mediator)
         {
             _contactAppService = contactAppService;
         }

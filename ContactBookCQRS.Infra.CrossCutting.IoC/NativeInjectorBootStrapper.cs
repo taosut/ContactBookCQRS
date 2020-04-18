@@ -10,6 +10,7 @@ using ContactBookCQRS.Infra.Persistence.Context;
 using ContactBookCQRS.Domain.Core.Bus;
 using ContactBookCQRS.Infra.CrossCutting.Bus;
 using ContactBookCQRS.Infra.Persistence.Repository;
+using ContactBookCQRS.Domain.Core.Notifications;
 
 namespace ContactBookCQRS.Infrastructure.CrossCutting.IoC
 {
@@ -22,6 +23,9 @@ namespace ContactBookCQRS.Infrastructure.CrossCutting.IoC
 
             // Application Services
             services.AddScoped<IContactAppService, ContactAppService>();
+
+            // Domain - Events
+            services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
 
             // Domain - Commands
             services.AddScoped<IRequestHandler<CreateNewContactCommand, bool>, ContactCommandHandler>();
