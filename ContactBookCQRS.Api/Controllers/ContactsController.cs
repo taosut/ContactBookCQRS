@@ -4,6 +4,7 @@ using ContactBookCQRS.Application.ViewModels;
 using ContactBookCQRS.Domain.Core.Bus;
 using ContactBookCQRS.Domain.Core.Notifications;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactBookCQRS.Controllers
@@ -20,6 +21,13 @@ namespace ContactBookCQRS.Controllers
             IMediatorHandler mediator) : base(notifications, mediator)
         {
             _contactAppService = contactAppService;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Get()
+        {
+            return Response(_contactAppService.GetContacts());
         }
 
         [HttpPost]

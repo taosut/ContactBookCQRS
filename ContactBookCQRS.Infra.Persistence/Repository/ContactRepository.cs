@@ -24,9 +24,14 @@ namespace ContactBookCQRS.Infra.Persistence.Repository
             await _dbContext.Contacts.AddAsync(entity);
         }
 
-        public Contact GetByEmail(string email, CancellationToken cancellationToken = default)
+        public Contact GetByEmail(string email)
         {
             return _dbContext.Contacts.FirstOrDefault(c => c.Email == email);
+        }
+
+        public IQueryable<Contact> GetContacts()
+        {
+            return _dbContext.Contacts;
         }
     }
 }

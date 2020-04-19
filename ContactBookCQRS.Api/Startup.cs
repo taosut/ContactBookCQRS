@@ -38,6 +38,9 @@ namespace ContactBookCQRS
             // Setting DBContexts
             services.AddDatabaseSetup(Configuration);
 
+            // AutoMapper Settings
+            services.AddAutoMapperSetup();
+
             // WebAPI Config
             services.AddControllers();
 
