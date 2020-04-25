@@ -7,6 +7,7 @@ namespace ContactBookCQRS.Domain.Interfaces
 {
     public interface IContactBookUnitOfWork : IUnitOfWork
     {
+        IContactBooksRepository ContactBooksRepository { get; }
         IContactsRepository ContactsRepository { get; }
     }
 }

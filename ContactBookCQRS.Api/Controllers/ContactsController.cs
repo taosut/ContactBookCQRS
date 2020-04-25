@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ContactBookCQRS.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ContactsController : ApiController
@@ -31,6 +32,7 @@ namespace ContactBookCQRS.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "CanWriteData")]
         public IActionResult Post([FromBody]ContactViewModel contactViewModel)
         {
             if (!ModelState.IsValid)

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ContactBookCQRS.Domain.Core.Bus;
 using ContactBookCQRS.Domain.Core.Notifications;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactBookCQRS.Api.Controllers.Base
@@ -53,6 +54,19 @@ namespace ContactBookCQRS.Api.Controllers.Base
             foreach (var erro in erros)
             {
                 var erroMsg = erro.Exception == null ? erro.ErrorMessage : erro.Exception.Message;
+            }
+        }
+
+        protected void NotifyError(string code, string message)
+        {
+            _mediator.RaiseEvent(new DomainNotification(code, message));
+        }
+
+        protected void AddIdentityErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                NotifyError(result.ToString(), error.Description);
             }
         }
     }

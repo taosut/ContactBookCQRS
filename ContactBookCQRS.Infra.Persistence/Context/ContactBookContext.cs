@@ -12,7 +12,6 @@ namespace ContactBookCQRS.Infra.Persistence.Context
         public ContactBookContext(DbContextOptions<ContactBookContext> options) 
             : base(options)
         {
-            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -21,6 +20,8 @@ namespace ContactBookCQRS.Infra.Persistence.Context
 
             base.OnModelCreating(modelBuilder);
         }
+
+        public DbSet<ContactBook> ContactBooks { get; set; }
         public DbSet<Contact> Contacts { get; set; }
     }
 }
