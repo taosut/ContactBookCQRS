@@ -30,22 +30,30 @@ namespace ContactBookCQRS.Infrastructure.CrossCutting.IoC
             // Application Services
             services.AddScoped<IContactAppService, ContactAppService>();
             services.AddScoped<IContactBookAppService, ContactBookAppService>();
+            services.AddScoped<ICategoryAppService, CategoryAppService>();
 
             // Domain - Events
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
 
             // Domain - Commands
             services.AddScoped<IRequestHandler<CreateNewContactBookCommand, bool>, ContactBookCommandHandler>();
+            services.AddScoped<IRequestHandler<CreateNewCategoryCommand, bool>, CategoryCommandHandler>();
             services.AddScoped<IRequestHandler<CreateNewContactCommand, bool>, ContactCommandHandler>();
 
             // Infra - Persistence
             services.AddScoped<IContactsRepository, ContactsRepository>();
             services.AddScoped<IContactBooksRepository, ContactBooksRepository>();
+            services.AddScoped<ICategoriesRepository, CategoriesRepository>();
             services.AddScoped<IContactBookUnitOfWork, ContactBookUnitOfWork>();
             services.AddScoped<ContactBookContext>();
 
+            // Infra Identity - Persistence
+            services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<IUserUnitOfWork, UserUnitOfWork>();
+            services.AddScoped<ApplicationDbContext>();
+
             // Infra - Identity
-            services.AddScoped<IUser, AspNetUser>();
+            services.AddScoped<IUser, User>();
         }
     }
 }

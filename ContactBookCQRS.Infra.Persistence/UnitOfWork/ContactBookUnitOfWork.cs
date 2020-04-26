@@ -11,15 +11,18 @@ namespace ContactBookCQRS.Infra.Persistence.UnitOfWork
     {
         public ContactBookUnitOfWork(
             ContactBookContext dbContext,
-            IContactsRepository contactsRepository,
-            IContactBooksRepository contactsBooksRepository
+            IContactBooksRepository contactsBooksRepository,
+            ICategoriesRepository categoriesRepository,
+            IContactsRepository contactsRepository
             ) : base(dbContext)
         {
             ContactBooksRepository = contactsBooksRepository ?? throw new ArgumentNullException(nameof(contactsBooksRepository));
+            CategoriesRepository = categoriesRepository ?? throw new ArgumentNullException(nameof(categoriesRepository));
             ContactsRepository = contactsRepository ?? throw new ArgumentNullException(nameof(contactsRepository));
         }
 
-        public IContactsRepository ContactsRepository { get; }
         public IContactBooksRepository ContactBooksRepository { get; }
+        public ICategoriesRepository CategoriesRepository { get; }
+        public IContactsRepository ContactsRepository { get; }        
     }
 }

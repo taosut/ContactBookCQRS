@@ -17,11 +17,14 @@ namespace ContactBookCQRS.Infra.Persistence.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ContactEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ContactBookEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryEntityTypeConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<ContactBook> ContactBooks { get; set; }
-        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Contact> Contacts { get; set; }        
     }
 }

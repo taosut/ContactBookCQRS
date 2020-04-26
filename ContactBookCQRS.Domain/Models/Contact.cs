@@ -5,18 +5,20 @@ namespace ContactBookCQRS.Domain.Models
 {
     public class Contact : Entity
     {
-        public Contact(Guid id, string name, string email, DateTime birthDate)
+        public Contact(Guid id, Guid categoryId, string name, string email, DateTime birthDate)
         {
             Id = id;
+            CategoryId = categoryId;
             Name = name;
             Email = email;
             BirthDate = birthDate;
         }
-
-        // Empty constructor for EF
-        protected Contact() { }
+        public Guid CategoryId { get; private set; }
         public string Name { get; private set; }
         public string Email { get; private set; }
         public DateTime BirthDate { get; private set; }
+
+        // Empty constructor for EF
+        protected Contact() { }        
     }
 }

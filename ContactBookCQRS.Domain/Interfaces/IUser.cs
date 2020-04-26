@@ -10,5 +10,6 @@ namespace ContactBookCQRS.Domain.Interfaces
         string Name { get; }
         bool IsAuthenticated();
         IEnumerable<Claim> GetClaimsIdentity();
+        string GetId();
     }
 }

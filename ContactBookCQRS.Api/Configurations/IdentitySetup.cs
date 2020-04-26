@@ -20,8 +20,7 @@ namespace ContactBookCQRS.Api.Configurations
             if (null == services) 
                 throw new ArgumentNullException(nameof(services));
 
-           services.AddDefaultIdentity<IdentityUser>()
-                .AddRoles<IdentityRole>()
+            services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 

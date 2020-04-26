@@ -6,19 +6,17 @@ using System.Text;
 
 namespace ContactBookCQRS.Domain.Commands
 {
-    public class CreateNewContactCommand : ContactCommand
+    public class CreateNewCategoryCommand : CategoryCommand
     {
-        public CreateNewContactCommand(Guid categoryId, string name, string email, DateTime birthDate)
+        public CreateNewCategoryCommand(Guid contactBookId, string name)
         {
-            CategoryId = categoryId;
+            ContactBookId = contactBookId;
             Name = name;
-            Email = email;
-            BirthDate = birthDate;
         }
 
         public override bool IsValid()
         {
-            ValidationResult = new CreateNewContactCommandValidation().Validate(this);
+            ValidationResult = new CreateNewCategoryCommandValidation().Validate(this);
             return ValidationResult.IsValid;
         }
     }

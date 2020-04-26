@@ -9,5 +9,6 @@ namespace ContactBookCQRS.Domain.Interfaces
     {
         IContactBooksRepository ContactBooksRepository { get; }
         IContactsRepository ContactsRepository { get; }
+        ICategoriesRepository CategoriesRepository { get; }
     }
 }

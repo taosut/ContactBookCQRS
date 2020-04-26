@@ -12,38 +12,38 @@ namespace ContactBookCQRS.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class ContactsController : ApiController
+    public class CategoryController : ApiController
     {
-        private readonly IContactAppService _contactAppService;
+        private readonly ICategoryAppService _categoryAppService;
 
-        public ContactsController(
-            IContactAppService contactAppService,
+        public CategoryController(
+            ICategoryAppService categoryAppService,
             INotificationHandler<DomainNotification> notifications,
             IMediatorHandler mediator) : base(notifications, mediator)
         {
-            _contactAppService = contactAppService;
+            _categoryAppService = categoryAppService;
         }
 
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Get()
         {
-            return Response(_contactAppService.GetContacts());
+            return Response(_categoryAppService.GetCategories());
         }
 
         [HttpPost]
         [Authorize(Policy = "CanWriteData")]
-        public IActionResult Post([FromBody]ContactViewModel contactViewModel)
+        public IActionResult Post([FromBody]CategoryViewModel categoryViewModel)
         {
             if (!ModelState.IsValid)
             {
                 NotifyModelStateErrors();
-                return Response(contactViewModel);
+                return Response(categoryViewModel);
             }
 
-            _contactAppService.CreateContact(contactViewModel);
+            _categoryAppService.CreateCategory(categoryViewModel);
 
-            return Response(contactViewModel);
+            return Response(categoryViewModel);
         }
     }
 }

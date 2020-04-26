@@ -11,6 +11,7 @@ namespace ContactBookCQRS.Application.AutoMapper
     {
         public DomainToViewModelProfile()
         {
+            CreateMap<Category, CategoryViewModel>();
             CreateMap<Contact, ContactViewModel>();
         }
     }

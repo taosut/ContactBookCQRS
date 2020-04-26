@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ContactBookCQRS.Domain\ContactBookCQRS.Domain.csproj" />
+    <ProjectReference Include="..\ContactBookCQRS.Infra.CrossCutting.Identity\ContactBookCQRS.Infra.CrossCutting.Identity.csproj" />
   </ItemGroup>
 
 </Project>

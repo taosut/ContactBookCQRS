@@ -10,6 +10,7 @@ using ContactBookCQRS.Domain.Core.Bus;
 using ContactBookCQRS.Domain.Core.Notifications;
 using ContactBookCQRS.Infra.CrossCutting.Identity.Models;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -21,21 +22,24 @@ namespace ContactBookCQRS.Api.Controllers
     [ApiController]
     public class AccountController : ApiController
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager; 
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly AppSettings _appSettings;
         private readonly IContactBookAppService _contactBookAppService;
 
         public AccountController(
-            SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager,
+            SignInManager<User> signInManager,
+            UserManager<User> userManager,
             IOptions<AppSettings> appSettings,
+            IHttpContextAccessor httpContextAccessor, 
             IContactBookAppService contactBookAppService,
             INotificationHandler<DomainNotification> notifications, 
             IMediatorHandler mediator) : base(notifications, mediator)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _httpContextAccessor = httpContextAccessor;
             _appSettings = appSettings.Value;
             _contactBookAppService = contactBookAppService;
         }
@@ -50,7 +54,7 @@ namespace ContactBookCQRS.Api.Controllers
                 return Response(userRegistration);
             }
 
-            var user = new IdentityUser
+            var user = new User(_httpContextAccessor)
             {
                 UserName = userRegistration.Email,
                 Email = userRegistration.Email

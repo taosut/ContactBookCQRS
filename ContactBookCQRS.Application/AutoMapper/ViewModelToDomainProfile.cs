@@ -12,8 +12,11 @@ namespace ContactBookCQRS.Application.AutoMapper
     {
         public ViewModelToDomainProfile()
         {
+            CreateMap<CategoryViewModel, CreateNewCategoryCommand>()
+            .ConstructUsing(c => new CreateNewCategoryCommand(c.ContactBookId, c.Name));
+
             CreateMap<ContactViewModel, CreateNewContactCommand>()
-            .ConstructUsing(c => new CreateNewContactCommand(c.Name, c.Email, c.BirthDate));
+            .ConstructUsing(c => new CreateNewContactCommand(c.CategoryId, c.Name, c.Email, c.BirthDate));
         }
     }
 }

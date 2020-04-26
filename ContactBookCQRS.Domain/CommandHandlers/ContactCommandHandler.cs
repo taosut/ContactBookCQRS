@@ -39,7 +39,13 @@ namespace ContactBookCQRS.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            Contact contact = new Contact(new Guid(), request.Name, request.Email, request.BirthDate);
+            Contact contact = new Contact(
+                new Guid(), 
+                request.CategoryId, 
+                request.Name, 
+                request.Email, 
+                request.BirthDate);
+
             _contactUnitOfWork.ContactsRepository.CreateContact(contact);
             _contactUnitOfWork.Commit();
 

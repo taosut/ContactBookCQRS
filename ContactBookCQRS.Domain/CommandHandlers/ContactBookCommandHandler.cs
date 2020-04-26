@@ -14,15 +14,18 @@ namespace ContactBookCQRS.Domain.CommandHandlers
         IRequestHandler<CreateNewContactBookCommand, bool>
     {
         private readonly IContactBookUnitOfWork _contactUnitOfWork;
+        private readonly IUserUnitOfWork _userUnitOfWork;
         private readonly IMediatorHandler _bus;
 
         public ContactBookCommandHandler(
-            IContactBookUnitOfWork uow,
+            IContactBookUnitOfWork contactUoW,
+            IUserUnitOfWork userUnitOfWork,
             IMediatorHandler bus)
-            : base(uow, bus)
+            : base(contactUoW, bus)
         {
             _bus = bus;
-            _contactUnitOfWork = uow;
+            _contactUnitOfWork = contactUoW;
+            _userUnitOfWork = userUnitOfWork;
         }
 
         public Task<bool> Handle(CreateNewContactBookCommand request, CancellationToken cancellationToken)
@@ -32,11 +35,18 @@ namespace ContactBookCQRS.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            ContactBook contactBook = new ContactBook(new Guid(), request.UserId);
-            _contactUnitOfWork.ContactBooksRepository.CreateContactBook(contactBook);
-            _contactUnitOfWork.Commit();
+            //Checking if user exists
+            IUser user = _userUnitOfWork.UsersRepository.GetById(request.UserId);
+            if(null != user)
+            {
+                ContactBook contactBook = new ContactBook(new Guid(), request.UserId);
+                _contactUnitOfWork.ContactBooksRepository.CreateContactBook(contactBook);
+                _contactUnitOfWork.Commit();
 
-            return Task.FromResult(true);
+                return Task.FromResult(true);
+            }
+
+            return Task.FromResult(false);
         }
     }
 }

@@ -19,6 +19,28 @@ namespace ContactBookCQRS.Infra.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("ContactBookCQRS.Domain.Models.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ContactBookId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContactBookId");
+
+                    b.ToTable("Categories","dbo");
+                });
+
             modelBuilder.Entity("ContactBookCQRS.Domain.Models.Contact", b =>
                 {
                     b.Property<Guid>("Id")
@@ -28,6 +50,9 @@ namespace ContactBookCQRS.Infra.Persistence.Migrations
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -41,6 +66,8 @@ namespace ContactBookCQRS.Infra.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Contacts","dbo");
                 });
 
@@ -48,6 +75,7 @@ namespace ContactBookCQRS.Infra.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserId")
@@ -55,7 +83,21 @@ namespace ContactBookCQRS.Infra.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ContactBooks");
+                    b.ToTable("ContactBooks","dbo");
+                });
+
+            modelBuilder.Entity("ContactBookCQRS.Domain.Models.Category", b =>
+                {
+                    b.HasOne("ContactBookCQRS.Domain.Models.ContactBook", null)
+                        .WithMany("Categories")
+                        .HasForeignKey("ContactBookId");
+                });
+
+            modelBuilder.Entity("ContactBookCQRS.Domain.Models.Contact", b =>
+                {
+                    b.HasOne("ContactBookCQRS.Domain.Models.Category", null)
+                        .WithMany("Contacts")
+                        .HasForeignKey("CategoryId");
                 });
 #pragma warning restore 612, 618
         }

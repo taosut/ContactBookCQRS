@@ -13,6 +13,9 @@ namespace ContactBookCQRS.Application.ViewModels
         [Key]
         public Guid Id { get; set; }
 
+        [Required(ErrorMessage = "The category is Required")]
+        public Guid CategoryId { get; set; }
+
         [Required(ErrorMessage = "The contact name is Required")]
         [MinLength(2)]
         [MaxLength(100)]
