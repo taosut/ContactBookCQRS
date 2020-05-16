@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="header">
+    <div class="title">
+      <h5>Categories</h5>
+      <p *ngIf="!categories">
+        <em>Loading...</em>
+      </p>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn btn-success" *ngIf="!newCategory">
+        <fa-icon [icon]="faPlusCircle" (click)="addCategory()"></fa-icon>
+      </button>
+      <button type="button" class="btn btn-danger" *ngIf="newCategory">
+        <fa-icon [icon]="faMinusCircle" (click)="cancelAddCategory()"></fa-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!--new category-->
+<div *ngIf="newCategory">
+  <app-add-category
+    (loadCategoryList)="loadCategoryList()"
+    (cancelAddCategory)="cancelAddCategory()">
+  </app-add-category>
+</div>
+
+<!--category list-->
+<div class="row" *ngIf="!newCategory && categories">
+  <div class="col">
+    <div class="tabs">
+      <div class="tab" *ngFor="let category of categories; let i = index">
+        <input type="checkbox" id="{{i}}" (change)="toggle(category.id, $event)"/>
+        <label class="tab-label" for="{{i}}">{{category.name}}</label>
+        <div class="tab-content" *ngFor="let contact of category.contacts; let j = index">
+          <div class="container">
+            <hr>
+            <div class="row">
+              <div class="col-md-1">
+                <span class="label-bold">Name</span>
+              </div>
+              <div class="col-md-11">
+                <span class="label">{{ contact.name }}</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-1">
+                <span class="label-bold">E-mail</span>
+              </div>
+              <div class="col-md-11">
+                <span class="label">{{ contact.email }}</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-1">
+                <span class="label-bold">Birthday</span>
+              </div>
+              <div class="col-md-11">
+                <span class="label">{{ contact.birthDate | date  }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
