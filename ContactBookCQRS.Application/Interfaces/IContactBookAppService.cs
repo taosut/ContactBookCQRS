@@ -1,4 +1,5 @@
 ﻿using ContactBookCQRS.Application.ViewModels;
+using ContactBookCQRS.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace ContactBookCQRS.Application.Interfaces
 {
     public interface IContactBookAppService
     {
-        void CreateContactBook(string userId);
+        void CreateContactBook(Guid userId);
+        Task<Guid> GetContactBookIdByUser(Guid userId);
     }
 }

@@ -9,7 +9,8 @@ namespace ContactBookCQRS.Application.Interfaces
 {
     public interface ICategoryAppService
     {
-        void CreateCategory(CategoryViewModel categoryViewModel);
-        IEnumerable<CategoryViewModel> GetCategories();
+        void CreateCategory(Guid userId, CategoryViewModel categoryViewModel);
+        IEnumerable<CategoryViewModel> GetCategories(Guid userId);
+        void UpdateCategory(Guid categoryId, CategoryViewModel categoryViewModel);
     }
 }

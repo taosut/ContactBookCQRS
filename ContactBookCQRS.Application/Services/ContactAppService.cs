@@ -33,9 +33,16 @@ namespace ContactBookCQRS.Application.Services
             _bus.SendCommand(createCommand);
         }
 
-        public IEnumerable<ContactViewModel> GetContacts()
+        public void UpdateContact(Guid contactId, ContactViewModel contactViewModel)
         {
-            return _uow.ContactsRepository.GetContacts()
+            contactViewModel.Id = contactId;
+            var updateCommand = _mapper.Map<UpdateContactCommand>(contactViewModel);
+            _bus.SendCommand(updateCommand);
+        }
+
+        public IEnumerable<ContactViewModel> GetContacts(Guid userId, Guid categoryId)
+        {
+            return _uow.ContactsRepository.GetContacts(userId, categoryId)
                 .ProjectTo<ContactViewModel>(_mapper.ConfigurationProvider);
         }
     }

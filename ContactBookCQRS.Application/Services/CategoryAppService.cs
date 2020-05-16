@@ -27,16 +27,23 @@ namespace ContactBookCQRS.Application.Services
             _uow = uow;
         }
 
-        public void CreateCategory(CategoryViewModel categoryViewModel)
+        public void CreateCategory(Guid userId, CategoryViewModel categoryViewModel)
         {
             var createCommand = _mapper.Map<CreateNewCategoryCommand>(categoryViewModel);
             _bus.SendCommand(createCommand);
         }
 
-        public IEnumerable<CategoryViewModel> GetCategories()
+        public IEnumerable<CategoryViewModel> GetCategories(Guid userId)
         {
-            return _uow.CategoriesRepository.GetCategories()
+            return _uow.CategoriesRepository.GetCategories(userId)
                 .ProjectTo<CategoryViewModel>(_mapper.ConfigurationProvider);
+        }
+
+        public void UpdateCategory(Guid categoryId, CategoryViewModel categoryViewModel)
+        {
+            categoryViewModel.Id = categoryId;
+            var updateCommand = _mapper.Map<UpdateCategoryCommand>(categoryViewModel);
+            _bus.SendCommand(updateCommand);
         }
     }
 }
