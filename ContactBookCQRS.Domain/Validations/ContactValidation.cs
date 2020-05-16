@@ -27,11 +27,5 @@ namespace ContactBookCQRS.Domain.Validations
                 .NotEmpty()
                 .EmailAddress();
         }
-
-        protected void ValidateId()
-        {
-            RuleFor(c => c.Id)
-                .NotEqual(Guid.Empty);
-        }
     }
 }

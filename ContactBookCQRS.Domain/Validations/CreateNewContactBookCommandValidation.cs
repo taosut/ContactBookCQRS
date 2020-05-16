@@ -10,7 +10,6 @@ namespace ContactBookCQRS.Domain.Validations
         public CreateNewContactBookCommandValidation()
         {
             ValidateHasUser();
-            ValidateUserId();
         }
     }
 }

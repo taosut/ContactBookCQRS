@@ -13,12 +13,5 @@ namespace ContactBookCQRS.Domain.Validations
             RuleFor(c => c.UserId)
                 .NotNull().WithMessage("Please ensure you have entered the User Id");
         }
-
-        protected void ValidateUserId()
-        {
-            RuleFor(c => c.UserId)
-                .NotEqual(String.Empty)
-                .WithMessage("The User Id is required");
-        }
     }
 }

@@ -6,6 +6,7 @@ namespace ContactBookCQRS.Domain.Interfaces
 {
     public interface IUsersRepository
     {
-        IUser GetById(string email);
+        IUser GetById(Guid id);
+        void Delete(IUser user);
     }
 }

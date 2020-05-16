@@ -11,5 +11,6 @@ namespace ContactBookCQRS.Domain.Interfaces
     public interface IContactBooksRepository
     {
         Task CreateContactBook(ContactBook entity, CancellationToken cancellationToken = default);
+        Task<ContactBook> GetContactBookByUser(Guid userId, CancellationToken cancellationToken = default);
     }
 }

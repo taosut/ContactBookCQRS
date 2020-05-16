@@ -20,8 +20,9 @@ namespace ContactBookCQRS.Domain.CommandHandlers
         public ContactBookCommandHandler(
             IContactBookUnitOfWork contactUoW,
             IUserUnitOfWork userUnitOfWork,
-            IMediatorHandler bus)
-            : base(contactUoW, bus)
+            IMediatorHandler bus,
+            INotificationHandler<DomainNotification> notifications)
+            : base(contactUoW, bus, notifications)
         {
             _bus = bus;
             _contactUnitOfWork = contactUoW;
@@ -30,23 +31,35 @@ namespace ContactBookCQRS.Domain.CommandHandlers
 
         public Task<bool> Handle(CreateNewContactBookCommand request, CancellationToken cancellationToken)
         {
-            if(!request.IsValid())
+            try
             {
-                return Task.FromResult(false);
-            }
+                if (!request.IsValid())
+                {
+                    return Task.FromResult(false);
+                }
 
-            //Checking if user exists
-            IUser user = _userUnitOfWork.UsersRepository.GetById(request.UserId);
-            if(null != user)
-            {
                 ContactBook contactBook = new ContactBook(new Guid(), request.UserId);
                 _contactUnitOfWork.ContactBooksRepository.CreateContactBook(contactBook);
                 _contactUnitOfWork.Commit();
-
                 return Task.FromResult(true);
             }
+            catch (Exception)
+            {
+                DeleteUser(request.UserId);
+                throw;
+            }              
+        }
 
-            return Task.FromResult(false);
+        private void DeleteUser(Guid userId)
+        {
+            //Checking if user exists
+            IUser user = _userUnitOfWork.UsersRepository.GetById(userId);
+
+            if (null != user)
+            {
+                _userUnitOfWork.UsersRepository.Delete(user);
+                _userUnitOfWork.Commit();
+            }
         }
     }
 }

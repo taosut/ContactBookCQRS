@@ -9,13 +9,13 @@ namespace ContactBookCQRS.Domain.Models
 {
     public class ContactBook : Entity, IAggregateRoot
     {
-        public ContactBook(Guid id, string userId)
+        public ContactBook(Guid id, Guid userId)
         {
             Id = id;
             UserId = userId;
         }
 
-        public string UserId { get; private set; }
+        public Guid UserId { get; private set; }
         public ICollection<Category> Categories { get; set; }
 
         // Empty constructor for EF
