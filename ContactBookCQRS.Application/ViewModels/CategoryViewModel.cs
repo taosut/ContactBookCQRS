@@ -13,13 +13,13 @@ namespace ContactBookCQRS.Application.ViewModels
         [Key]
         public Guid Id { get; set; }
 
+        [Required(ErrorMessage = "The contact book is Required")]
+        public Guid ContactBookId { get; set; }
+
         [Required(ErrorMessage = "The category name is Required")]
         [MinLength(2)]
         [MaxLength(100)]
         [DisplayName("Name")]
         public string Name { get; set; }
-
-        [Required(ErrorMessage = "The contact book is Required")]
-        public Guid ContactBookId { get; set; }
     }
 }
