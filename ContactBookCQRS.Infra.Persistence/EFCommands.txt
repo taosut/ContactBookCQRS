@@ -1,0 +1,5 @@
+﻿add-migration InitialCreate -context EventStoreContext
+add-migration InitialCreate -context ContactBookContext
+
+update-database -context ContactBookContext
+update-database -context EventStoreContext

@@ -26,7 +26,7 @@ namespace ContactBookCQRS.Infra.Persistence.Migrations
                         .HasColumnName("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ContactBookId")
+                    b.Property<Guid>("ContactBookId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -51,7 +51,7 @@ namespace ContactBookCQRS.Infra.Persistence.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("CategoryId")
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
@@ -78,8 +78,8 @@ namespace ContactBookCQRS.Infra.Persistence.Migrations
                         .HasColumnName("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -90,14 +90,18 @@ namespace ContactBookCQRS.Infra.Persistence.Migrations
                 {
                     b.HasOne("ContactBookCQRS.Domain.Models.ContactBook", null)
                         .WithMany("Categories")
-                        .HasForeignKey("ContactBookId");
+                        .HasForeignKey("ContactBookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ContactBookCQRS.Domain.Models.Contact", b =>
                 {
                     b.HasOne("ContactBookCQRS.Domain.Models.Category", null)
                         .WithMany("Contacts")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

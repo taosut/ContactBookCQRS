@@ -18,9 +18,9 @@ namespace ContactBookCQRS.Infra.Persistence.UnitOfWork
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
-        public int Commit()
+        public bool Commit()
         {
-            return _dbContext.SaveChanges();
+            return _dbContext.SaveChanges() > 0;
         }
     }
 }

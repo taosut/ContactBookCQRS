@@ -11,7 +11,7 @@ namespace ContactBookCQRS.Infra.CrossCutting.Identity.Models
     /// <summary>
     /// Application User
     /// </summary>
-    public class User : IdentityUser, IUser 
+    public class User : IdentityUser<Guid>, IUser 
     {
         public string Name => GetName();
 
@@ -33,11 +33,6 @@ namespace ContactBookCQRS.Infra.CrossCutting.Identity.Models
                    .FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
         }
 
-        public string GetId()
-        {
-            return Id;
-        }
-
         public bool IsAuthenticated()
         {
             return _accessor.HttpContext.User.Identity.IsAuthenticated;
@@ -48,4 +43,6 @@ namespace ContactBookCQRS.Infra.CrossCutting.Identity.Models
             return _accessor.HttpContext.User.Claims;
         }
     }
+
+    public class Role : IdentityRole<Guid> { }
 }

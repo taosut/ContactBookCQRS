@@ -14,6 +14,9 @@ using ContactBookCQRS.Domain.Core.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using ContactBookCQRS.Infra.CrossCutting.Identity.Authorization;
 using ContactBookCQRS.Infra.CrossCutting.Identity.Models;
+using ContactBookCQRS.Domain.Core.Events;
+using ContactBookCQRS.Infra.Persistence.Repository.EventSourcing;
+using ContactBookCQRS.Infra.Persistence.EventSourcing.Equinox.Infra.Data.EventSourcing;
 
 namespace ContactBookCQRS.Infrastructure.CrossCutting.IoC
 {
@@ -39,6 +42,8 @@ namespace ContactBookCQRS.Infrastructure.CrossCutting.IoC
             services.AddScoped<IRequestHandler<CreateNewContactBookCommand, bool>, ContactBookCommandHandler>();
             services.AddScoped<IRequestHandler<CreateNewCategoryCommand, bool>, CategoryCommandHandler>();
             services.AddScoped<IRequestHandler<CreateNewContactCommand, bool>, ContactCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateCategoryCommand, bool>, CategoryCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateContactCommand, bool>, ContactCommandHandler>();
 
             // Infra - Persistence
             services.AddScoped<IContactsRepository, ContactsRepository>();
@@ -51,6 +56,11 @@ namespace ContactBookCQRS.Infrastructure.CrossCutting.IoC
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IUserUnitOfWork, UserUnitOfWork>();
             services.AddScoped<ApplicationDbContext>();
+
+            // Infra - Data EventSourcing
+            services.AddScoped<IEventStoreRepository, EventStoreRepository>();
+            services.AddScoped<IEventStore, EventStore>();
+            services.AddScoped<EventStoreContext>();
 
             // Infra - Identity
             services.AddScoped<IUser, User>();

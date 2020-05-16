@@ -1,10 +1,11 @@
 ﻿using ContactBookCQRS.Domain.Models;
+using ContactBookCQRS.Infra.CrossCutting.Identity.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ContactBookCQRS.Infra.Persistence.Configurations
 {
-    public class ContactBookEntityTypeConfiguration : IEntityTypeConfiguration<ContactBook>
+    public class ContactBookConfiguration : IEntityTypeConfiguration<ContactBook>
     {
         public void Configure(EntityTypeBuilder<ContactBook> builder)
         {

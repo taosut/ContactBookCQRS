@@ -1,6 +1,7 @@
 ﻿using ContactBookCQRS.Domain.Interfaces;
 using ContactBookCQRS.Domain.Models;
 using ContactBookCQRS.Infra.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,19 @@ namespace ContactBookCQRS.Infra.Persistence.Repository
             await _dbContext.Categories.AddAsync(entity);
         }
 
-        public IQueryable<Category> GetCategories()
+        public IQueryable<Category> GetCategories(Guid userId)
         {
+            var query = from ca in _dbContext.Categories
+                        join cb in _dbContext.ContactBooks on ca.ContactBookId equals cb.Id
+                        where cb.UserId == userId
+                        select ca;
+
             return _dbContext.Categories;
+        }
+
+        public void UpdateCategory(Category entity)
+        {
+            _dbContext.Entry(entity).State = EntityState.Modified;
         }
     }
 }

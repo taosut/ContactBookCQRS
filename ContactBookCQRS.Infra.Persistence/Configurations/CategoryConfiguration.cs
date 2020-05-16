@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ContactBookCQRS.Infra.Persistence.Configurations
 {
-    public class CategoryEntityTypeConfiguration : IEntityTypeConfiguration<Category>
+    public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
@@ -17,9 +17,6 @@ namespace ContactBookCQRS.Infra.Persistence.Configurations
                 .HasColumnType("varchar(100)")
                 .HasMaxLength(100)
                 .IsRequired();
-
-            builder.HasMany(e => e.Contacts);
-
         }
     }
 }

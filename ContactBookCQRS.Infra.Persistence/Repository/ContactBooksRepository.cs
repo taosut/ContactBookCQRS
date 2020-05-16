@@ -1,6 +1,7 @@
 ﻿using ContactBookCQRS.Domain.Interfaces;
 using ContactBookCQRS.Domain.Models;
 using ContactBookCQRS.Infra.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,12 @@ namespace ContactBookCQRS.Infra.Persistence.Repository
         public async Task CreateContactBook(ContactBook entity, CancellationToken cancellationToken = default)
         {
             await _dbContext.ContactBooks.AddAsync(entity);
+        }
+
+        public async Task<ContactBook> GetContactBookByUser(Guid userId, CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.ContactBooks
+                .FirstOrDefaultAsync(c => c.UserId == userId);
         }
     }
 }

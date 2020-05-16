@@ -20,9 +20,14 @@ namespace ContactBookCQRS.Infra.Persistence.Repository
             _dbContext = dbContext;
         }
 
-        public IUser GetById(string Id)
+        public IUser GetById(Guid Id)
         {
             return _dbContext.Users.FirstOrDefault(c => c.Id == Id);
+        }
+
+        public void Delete(IUser user)
+        {            
+            _dbContext.Users.Remove(user as User);
         }
     }
 }

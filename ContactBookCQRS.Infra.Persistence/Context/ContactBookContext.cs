@@ -1,4 +1,5 @@
 ﻿using ContactBookCQRS.Domain.Models;
+using ContactBookCQRS.Infra.CrossCutting.Identity.Models;
 using ContactBookCQRS.Infra.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,9 +17,9 @@ namespace ContactBookCQRS.Infra.Persistence.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new ContactEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new ContactBookEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new CategoryEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ContactConfiguration());
+            modelBuilder.ApplyConfiguration(new ContactBookConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
