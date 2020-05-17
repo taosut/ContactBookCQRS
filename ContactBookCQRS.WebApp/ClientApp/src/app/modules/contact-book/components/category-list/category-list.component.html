@@ -7,34 +7,28 @@
       </p>
     </div>
     <div class="actions">
-      <button type="button" class="btn btn-success" *ngIf="!newCategory"
-        (click)="enableCreateCategory()">
-        <fa-icon [icon]="faPlusCircle"></fa-icon>
-      </button>
-      <button type="button" class="btn btn-warning" *ngIf="newCategory"
-        (click)="cancelAddCategory()">
-        <fa-icon [icon]="faMinusCircle"></fa-icon>
+      <button type="button" class="btn btn-light"
+        (click)="addEditCategory()">
+        <fa-icon [icon]="faPlusCircle" class="buttonCreateColor"
+        title="Create category"></fa-icon>
       </button>
     </div>
   </div>
 </div>
 
-<!--new category-->
-<div *ngIf="newCategory">
-  <app-create-category
-    (loadCategoryList)="loadCategoryList()"
-    (cancelAddCategory)="cancelAddCategory()">
-  </app-create-category>
-</div>
+<template #categoryContainer></template>
 
-<div class="row" *ngIf="!newCategory && categories">
+<div class="row">
   <div class="col">
     <div class="tabs">
       <div class="tab" *ngFor="let category of categories; let i = index">
 
         <!--actions-->
         <div class="tab-small">
-          <fa-icon [icon]="faMinusCircle" (click)="deleteCategory(category)" class="btn btn-danger"></fa-icon>
+          <fa-icon [icon]="faMinusCircle" (click)="deleteCategory(category)"
+          class="btn btn-light buttonRemoveColor" title="Delete category"></fa-icon>
+          <fa-icon [icon]="faEdit" (click)="addEditCategory(category)"
+          class="btn btn-light buttonEditColor" title="Edit category"></fa-icon>
         </div>
 
         <input type="checkbox" id="{{i}}" (change)="toggle(category.id, $event)"/>
@@ -42,32 +36,7 @@
 
         <!--contacts-->
         <div class="tab-content" *ngFor="let contact of category.contacts; let j = index">
-          <div class="contact-container">
-            <div class="row">
-              <div class="col-md-1">
-                <span class="label-bold">Name</span>
-              </div>
-              <div class="col-md-11">
-                <span class="label">{{ contact.name }}</span>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-1">
-                <span class="label-bold">E-mail</span>
-              </div>
-              <div class="col-md-11">
-                <span class="label">{{ contact.email }}</span>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-1">
-                <span class="label-bold">Birthday</span>
-              </div>
-              <div class="col-md-11">
-                <span class="label">{{ contact.birthDate | date  }}</span>
-              </div>
-            </div>
-          </div>
+          <app-contact [contact]="contact"></app-contact>
         </div>
 
       </div>

@@ -1,9 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentFactory, ComponentRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Category } from 'app/core/models/Category';
 import { CategoryService } from '../../category.service';
 import { delay } from 'rxjs/operators';
-import { faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPlusCircle, faMinusCircle, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { CategoryComponent } from '../category/category.component';
 
 @Component({
   selector: 'app-category-list',
@@ -11,16 +12,50 @@ import { faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./category-list.scss']
 })
 export class CategoryListComponent implements OnInit {
-  public categories: Category[];
-  public newCategory = false;
+
+  categories: Category[];
+  createEditCategory = false;
   faPlusCircle = faPlusCircle;
   faMinusCircle = faMinusCircle;
+  faEdit = faEdit;
+  categoryToEdit: Category;
+  componentRef: any;
+
+  @ViewChild("categoryContainer", { read: ViewContainerRef }) container;
 
   constructor(
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private resolver: ComponentFactoryResolver
   ) { }
 
   ngOnInit() {
+    this.loadCategoryList();
+  }
+
+  addEditCategory(category?: Category) {
+    this.container.clear();
+    const factory = this.resolver.resolveComponentFactory(CategoryComponent);
+    this.componentRef = this.container.createComponent(factory);
+    this.componentRef.instance.category = category;
+    this.componentRef.instance.editMode = category ? true : false;
+
+    this.componentRef.instance.loadCategoryList.subscribe(event => {
+      this.destroyAndReload();
+    });
+
+    this.componentRef.instance.destroyComponent.subscribe(event => {
+      this.destroyAndReload();
+    });
+  }
+
+  toggle(categoryId: string, e){
+    if(e.target.checked) {
+      this.getContacts(categoryId);
+    }
+  }
+
+  destroyAndReload() {
+    this.componentRef.destroy();
     this.loadCategoryList();
   }
 
@@ -31,12 +66,6 @@ export class CategoryListComponent implements OnInit {
       this.categories = result.data;
     },
     error => console.error(error));
-  }
-
-  toggle(categoryId: string, e){
-    if(e.target.checked) {
-      this.getContacts(categoryId);
-    }
   }
 
   getContacts(categoryId: string) {
@@ -52,10 +81,6 @@ export class CategoryListComponent implements OnInit {
     }
   }
 
-  enableCreateCategory(){
-    this.newCategory = true;
-  }
-
   deleteCategory(category: Category){
     if(category) {
       this.categoryService.deleteCategory(category.id)
@@ -67,7 +92,4 @@ export class CategoryListComponent implements OnInit {
     }
   }
 
-  cancelAddCategory(){
-    this.newCategory = false;
-  }
 }

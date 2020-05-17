@@ -30,4 +30,8 @@ export class CategoryService extends RestService {
   public getContacts(categoryId: string): Observable<Contact[]>{
     return this.get("category/" + categoryId + "/contacts");
   }
+
+  public updateCategory(category: Category){
+    return this.put("category/" + category.id, category);
+  }
 }

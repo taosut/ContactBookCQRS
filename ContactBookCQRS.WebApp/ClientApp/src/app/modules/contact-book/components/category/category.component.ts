@@ -1,23 +1,24 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CategoryService } from '../../category.service';
 import { Category } from 'app/core/models/Category';
 import { AuthService } from 'app/core/services/auth.service';
 
 @Component({
-  selector: 'app-create-category',
-  templateUrl: './create-category.component.html',
-  styleUrls: ['./create-category.component.scss']
+  selector: 'app-category',
+  templateUrl: './category.component.html',
+  styleUrls: ['./category.component.scss']
 })
-export class CreateCategoryComponent implements OnInit {
+export class CategoryComponent implements OnInit {
 
   @Output("loadCategoryList") loadCategoryList: EventEmitter<any> = new EventEmitter();
-  @Output("cancelAddCategory") cancelAddCategory: EventEmitter<any> = new EventEmitter();
+  @Output("destroyComponent") destroyComponent: EventEmitter<any> = new EventEmitter();
 
+  category: Category;
+  editMode: boolean;
   categoryForm: FormGroup;
   loading = false;
   submitted = false;
-  returnUrl: string;
   error = '';
 
   constructor(private formBuilder: FormBuilder,
@@ -28,11 +29,21 @@ export class CreateCategoryComponent implements OnInit {
     this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
     });
+
+    // new category
+    if(!this.category) {
+      this.category = new Category(
+        this.authService.currentUserValue.contactBookId,'');
+    }
   }
 
   // getter for easy access to form fields
   get f() {
     return this.categoryForm.controls;
+  }
+
+  cancel(){
+    this.destroyComponent.emit();
   }
 
   onSubmit() {
@@ -43,16 +54,35 @@ export class CreateCategoryComponent implements OnInit {
         return;
     }
 
-    this.loading = true;
-    let category = new Category(
-      this.authService.currentUserValue.contactBookId,
-      this.f.name.value);
+    //Create category
+    if(!this.editMode) {
+      this.createCategory();
+    }
+    else { //Update category
+      this.updateCategory();
+    }
+  }
 
-    this.categoryService.createCategory(category)
+  createCategory() {
+    this.loading = true;
+    this.category.name = this.f.name.value;
+    this.categoryService.createCategory(this.category)
     .subscribe(
       data => {
         this.loadCategoryList.emit();
-        this.cancelAddCategory.emit();
+      },
+      error => {
+          this.error = error;
+          this.loading = false;
+      });
+  }
+
+  updateCategory() {
+    this.loading = true;
+    this.categoryService.updateCategory(this.category)
+    .subscribe(
+      data => {
+        this.loadCategoryList.emit();
       },
       error => {
           this.error = error;

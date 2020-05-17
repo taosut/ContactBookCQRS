@@ -21,10 +21,6 @@ input {
   }
 }
 
-.contact-container{
-  padding-left: 40px;
-}
-
 // Layout
 .row {
   display:flex;
@@ -42,7 +38,7 @@ input {
   box-shadow: 0 4px 4px -2px rgba(0,0,0,0.5);
 }
 .tab-small{
-  width: 4.5%;
+  width: 8%;
   float: left;
 }
 .tab {
@@ -102,13 +98,5 @@ input:checked {
   ~ .tab-content {
     max-height: 100vh;
     padding: 1em;
-
-      .label-bold {
-        font-weight: 500;
-      }
-
-      .label {
-        color:black;
-      }
   }
 }
