@@ -13,6 +13,7 @@ namespace ContactBookCQRS.Domain.CommandHandlers
 {
     public class CategoryCommandHandler : CommandHandler,
         IRequestHandler<CreateNewCategoryCommand, bool>,
+        IRequestHandler<DeleteCategoryCommand, bool>,
         IRequestHandler<UpdateCategoryCommand, bool>
     {
         private readonly IContactBookUnitOfWork _contactUnitOfWork;
@@ -47,6 +48,24 @@ namespace ContactBookCQRS.Domain.CommandHandlers
             return Task.FromResult(true);
         }
 
+        public Task<bool> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+        {
+            if (!request.IsValid())
+            {
+                return Task.FromResult(false);
+            }
+
+            _contactUnitOfWork.CategoriesRepository.DeleteCategory(request.UserId, request.Id);
+
+            //Storing the deletion event
+            if (_contactUnitOfWork.Commit())
+            {
+                _bus.RaiseEvent(new CategoryDeleteEvent(request.Id));
+            }
+
+            return Task.FromResult(true);
+        }
+
         public Task<bool> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
             if (!request.IsValid())
@@ -57,7 +76,7 @@ namespace ContactBookCQRS.Domain.CommandHandlers
             Category category = new Category(request.Id, request.ContactBookId, request.Name);
             _contactUnitOfWork.CategoriesRepository.UpdateCategory(category);
 
-            //Storing the creation event
+            //Storing the update event
             if (_contactUnitOfWork.Commit())
             {
                 _bus.RaiseEvent(new CategoryUpdatedEvent(category.Id, category.ContactBookId, category.Name));

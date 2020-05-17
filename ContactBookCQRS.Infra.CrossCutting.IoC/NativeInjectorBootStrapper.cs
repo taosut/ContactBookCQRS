@@ -41,8 +41,9 @@ namespace ContactBookCQRS.Infrastructure.CrossCutting.IoC
             // Domain - Commands
             services.AddScoped<IRequestHandler<CreateNewContactBookCommand, bool>, ContactBookCommandHandler>();
             services.AddScoped<IRequestHandler<CreateNewCategoryCommand, bool>, CategoryCommandHandler>();
-            services.AddScoped<IRequestHandler<CreateNewContactCommand, bool>, ContactCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateCategoryCommand, bool>, CategoryCommandHandler>();
+            services.AddScoped<IRequestHandler<DeleteCategoryCommand, bool>, CategoryCommandHandler>();
+            services.AddScoped<IRequestHandler<CreateNewContactCommand, bool>, ContactCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateContactCommand, bool>, ContactCommandHandler>();
 
             // Infra - Persistence

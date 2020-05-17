@@ -27,10 +27,16 @@ namespace ContactBookCQRS.Application.Services
             _uow = uow;
         }
 
-        public void CreateCategory(Guid userId, CategoryViewModel categoryViewModel)
+        public void CreateCategory(CategoryViewModel categoryViewModel)
         {
             var createCommand = _mapper.Map<CreateNewCategoryCommand>(categoryViewModel);
             _bus.SendCommand(createCommand);
+        }
+
+        public void DeleteCategory(Guid userId, Guid categoryId)
+        {
+            var deleteCommand = new DeleteCategoryCommand(userId, categoryId);
+            _bus.SendCommand(deleteCommand);
         }
 
         public IEnumerable<CategoryViewModel> GetCategories(Guid userId)
@@ -38,7 +44,7 @@ namespace ContactBookCQRS.Application.Services
             return _uow.CategoriesRepository.GetCategories(userId)
                 .ProjectTo<CategoryViewModel>(_mapper.ConfigurationProvider);
         }
-
+ 
         public void UpdateCategory(Guid categoryId, CategoryViewModel categoryViewModel)
         {
             categoryViewModel.Id = categoryId;
