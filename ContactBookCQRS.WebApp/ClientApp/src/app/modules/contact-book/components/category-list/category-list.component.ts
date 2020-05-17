@@ -52,8 +52,19 @@ export class CategoryListComponent implements OnInit {
     }
   }
 
-  addCategory(){
+  enableCreateCategory(){
     this.newCategory = true;
+  }
+
+  deleteCategory(category: Category){
+    if(category) {
+      this.categoryService.deleteCategory(category.id)
+      //.pipe(delay(1000))
+      .subscribe((result: any) => {
+        this.loadCategoryList();
+      },
+      error => console.error(error));
+    }
   }
 
   cancelAddCategory(){

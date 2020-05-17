@@ -15,8 +15,12 @@ export class CategoryService extends RestService {
     super(http, baseUrl);
   }
 
-  public addCategory(category: Category){
+  public createCategory(category: Category){
     return this.post("category", category);
+  }
+
+  public deleteCategory(categoryId: string){
+    return this.delete("category/" + categoryId);
   }
 
   public getCategories(): Observable<Category[]>{

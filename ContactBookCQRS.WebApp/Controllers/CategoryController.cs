@@ -56,9 +56,17 @@ namespace ContactBookCQRS.WebApp.Controllers
                 return Response(categoryViewModel);
             }
 
-            _categoryAppService.CreateCategory(UserId, categoryViewModel);
+            _categoryAppService.CreateCategory(categoryViewModel);
 
             return Response(categoryViewModel);
+        }
+
+        [Authorize(Policy = "CanWriteData")]
+        [HttpDelete, Route("{categoryId:guid}")]
+        public IActionResult Delete([FromRoute]Guid categoryId)
+        {
+            _categoryAppService.DeleteCategory(UserId, categoryId);
+            return Ok();
         }
 
         [Authorize(Policy = "CanWriteData")]

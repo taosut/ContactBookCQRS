@@ -12,7 +12,6 @@ input {
   margin-top: 20px;
 
   .title {
-
     padding-left: 20px;
     margin: 10px;
     float: left;
@@ -20,6 +19,10 @@ input {
   .actions  {
     float: right;
   }
+}
+
+.contact-container{
+  padding-left: 40px;
 }
 
 // Layout
@@ -38,16 +41,23 @@ input {
   overflow: hidden;
   box-shadow: 0 4px 4px -2px rgba(0,0,0,0.5);
 }
+.tab-small{
+  width: 4.5%;
+  float: left;
+}
 .tab {
-  width: 100%;
+  float: left;
   color: white;
   overflow: hidden;
+  width: 100%;
+
   &-label {
     display: flex;
     justify-content: space-between;
-    padding: 1em;
+    padding: 0.4em;
     background: $midnight;
     font-weight: bold;
+
     cursor: pointer;
     /* Icon */
     &:hover {

@@ -4,13 +4,13 @@ import { HomeComponent } from './components/home/home.component';
 import { CategoryListComponent } from './components/category-list/category-list.component';
 import { CategoryService } from './category.service';
 import { SharedModule } from 'app/shared/shared.module';
-import { AddCategoryComponent } from './components/add-category/add-category.component';
+import { CreateCategoryComponent } from './components/create-category/create-category.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     CategoryListComponent,
-    AddCategoryComponent
+    CreateCategoryComponent
   ],
   imports: [
     CommonModule,

@@ -24,6 +24,15 @@ export abstract class RestService {
     );
   }
 
+  protected delete(relativeUrl: string, body?: any): Observable<any> {
+    const fullUrl = Location.joinWithSlash(this.apiBaseUrl, relativeUrl);
+    return this.http.delete(fullUrl, body).pipe(
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
+
   protected post(relativeUrl: string, body: any, httpParams?: HttpParams): Observable<any> {
     const fullUrl = Location.joinWithSlash(this.apiBaseUrl, relativeUrl);
     return this.http.post(fullUrl, body, this.httpHeaders).pipe(

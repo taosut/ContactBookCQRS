@@ -5,11 +5,11 @@ import { Category } from 'app/core/models/Category';
 import { AuthService } from 'app/core/services/auth.service';
 
 @Component({
-  selector: 'app-add-category',
-  templateUrl: './add-category.component.html',
-  styleUrls: ['./add-category.component.scss']
+  selector: 'app-create-category',
+  templateUrl: './create-category.component.html',
+  styleUrls: ['./create-category.component.scss']
 })
-export class AddCategoryComponent implements OnInit {
+export class CreateCategoryComponent implements OnInit {
 
   @Output("loadCategoryList") loadCategoryList: EventEmitter<any> = new EventEmitter();
   @Output("cancelAddCategory") cancelAddCategory: EventEmitter<any> = new EventEmitter();
@@ -48,7 +48,7 @@ export class AddCategoryComponent implements OnInit {
       this.authService.currentUserValue.contactBookId,
       this.f.name.value);
 
-    this.categoryService.addCategory(category)
+    this.categoryService.createCategory(category)
     .subscribe(
       data => {
         this.loadCategoryList.emit();

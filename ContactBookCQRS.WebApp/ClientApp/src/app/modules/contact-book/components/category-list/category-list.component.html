@@ -7,11 +7,13 @@
       </p>
     </div>
     <div class="actions">
-      <button type="button" class="btn btn-success" *ngIf="!newCategory">
-        <fa-icon [icon]="faPlusCircle" (click)="addCategory()"></fa-icon>
+      <button type="button" class="btn btn-success" *ngIf="!newCategory"
+        (click)="enableCreateCategory()">
+        <fa-icon [icon]="faPlusCircle"></fa-icon>
       </button>
-      <button type="button" class="btn btn-danger" *ngIf="newCategory">
-        <fa-icon [icon]="faMinusCircle" (click)="cancelAddCategory()"></fa-icon>
+      <button type="button" class="btn btn-warning" *ngIf="newCategory"
+        (click)="cancelAddCategory()">
+        <fa-icon [icon]="faMinusCircle"></fa-icon>
       </button>
     </div>
   </div>
@@ -19,22 +21,28 @@
 
 <!--new category-->
 <div *ngIf="newCategory">
-  <app-add-category
+  <app-create-category
     (loadCategoryList)="loadCategoryList()"
     (cancelAddCategory)="cancelAddCategory()">
-  </app-add-category>
+  </app-create-category>
 </div>
 
-<!--category list-->
 <div class="row" *ngIf="!newCategory && categories">
   <div class="col">
     <div class="tabs">
       <div class="tab" *ngFor="let category of categories; let i = index">
+
+        <!--actions-->
+        <div class="tab-small">
+          <fa-icon [icon]="faMinusCircle" (click)="deleteCategory(category)" class="btn btn-danger"></fa-icon>
+        </div>
+
         <input type="checkbox" id="{{i}}" (change)="toggle(category.id, $event)"/>
         <label class="tab-label" for="{{i}}">{{category.name}}</label>
+
+        <!--contacts-->
         <div class="tab-content" *ngFor="let contact of category.contacts; let j = index">
-          <div class="container">
-            <hr>
+          <div class="contact-container">
             <div class="row">
               <div class="col-md-1">
                 <span class="label-bold">Name</span>
@@ -61,6 +69,7 @@
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
