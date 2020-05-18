@@ -60,7 +60,7 @@ namespace ContactBookCQRS.Domain.CommandHandlers
             //Storing the deletion event
             if (_contactUnitOfWork.Commit())
             {
-                _bus.RaiseEvent(new CategoryDeleteEvent(request.Id));
+                _bus.RaiseEvent(new ContactDeleteEvent(request.Id));
             }
 
             return Task.FromResult(true);

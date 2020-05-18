@@ -44,6 +44,7 @@ namespace ContactBookCQRS.Infrastructure.CrossCutting.IoC
             services.AddScoped<IRequestHandler<UpdateCategoryCommand, bool>, CategoryCommandHandler>();
             services.AddScoped<IRequestHandler<DeleteCategoryCommand, bool>, CategoryCommandHandler>();
             services.AddScoped<IRequestHandler<CreateNewContactCommand, bool>, ContactCommandHandler>();
+            services.AddScoped<IRequestHandler<DeleteContactCommand, bool>, ContactCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateContactCommand, bool>, ContactCommandHandler>();
 
             // Infra - Persistence

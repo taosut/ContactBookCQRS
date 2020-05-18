@@ -33,6 +33,12 @@ namespace ContactBookCQRS.Application.Services
             _bus.SendCommand(createCommand);
         }
 
+        public void DeleteContact(Guid userId, Guid contactId)
+        {
+            var deleteCommand = new DeleteContactCommand(userId, contactId);
+            _bus.SendCommand(deleteCommand);
+        }
+
         public void UpdateContact(Guid contactId, ContactViewModel contactViewModel)
         {
             contactViewModel.Id = contactId;

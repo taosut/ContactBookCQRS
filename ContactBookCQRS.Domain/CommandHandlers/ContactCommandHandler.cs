@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ContactBookCQRS.Domain.Commands;
 using ContactBookCQRS.Domain.Core.Bus;
 using ContactBookCQRS.Domain.Core.Notifications;
+using ContactBookCQRS.Domain.Events;
 using ContactBookCQRS.Domain.Interfaces;
 using ContactBookCQRS.Domain.Models;
 using MediatR;
@@ -12,7 +13,8 @@ namespace ContactBookCQRS.Domain.CommandHandlers
 {
     public class ContactCommandHandler : CommandHandler,
         IRequestHandler<CreateNewContactCommand, bool>,
-        IRequestHandler<UpdateContactCommand, bool>
+        IRequestHandler<DeleteContactCommand, bool>,
+        IRequestHandler<UpdateContactCommand, bool>        
     {
         private readonly IContactBookUnitOfWork _contactUnitOfWork;
         private readonly IMediatorHandler _bus;
@@ -50,6 +52,24 @@ namespace ContactBookCQRS.Domain.CommandHandlers
 
             _contactUnitOfWork.ContactsRepository.CreateContact(contact);
             _contactUnitOfWork.Commit();
+
+            return Task.FromResult(true);
+        }
+
+        public Task<bool> Handle(DeleteContactCommand request, CancellationToken cancellationToken)
+        {
+            if (!request.IsValid())
+            {
+                return Task.FromResult(false);
+            }
+
+            _contactUnitOfWork.ContactsRepository.DeleteContact(request.UserId, request.Id);
+
+            //Storing the deletion event
+            if (_contactUnitOfWork.Commit())
+            {
+                _bus.RaiseEvent(new ContactDeleteEvent(request.Id));
+            }
 
             return Task.FromResult(true);
         }

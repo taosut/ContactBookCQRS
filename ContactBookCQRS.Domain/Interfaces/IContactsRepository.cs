@@ -11,8 +11,10 @@ namespace ContactBookCQRS.Domain.Interfaces
     public interface IContactsRepository
     {
         Task CreateContact(Contact entity, CancellationToken cancellationToken = default);
-        void UpdateContact(Contact entity);
+        void DeleteContact(Guid userId, Guid entityId, CancellationToken cancellationToken = default);
         Contact GetByEmail(string email);
         IQueryable<Contact> GetContacts(Guid userId, Guid categoryId);
+        void UpdateContact(Contact entity);
+
     }
 }

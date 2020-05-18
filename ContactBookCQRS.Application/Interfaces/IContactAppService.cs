@@ -10,6 +10,7 @@ namespace ContactBookCQRS.Application.Interfaces
     public interface IContactAppService
     {
         void CreateContact(ContactViewModel contactViewModel);
+        void DeleteContact(Guid userId, Guid contactId);
         IEnumerable<ContactViewModel> GetContacts(Guid userId, Guid categoryId);
         void UpdateContact(Guid contactId, ContactViewModel contactViewModel);
     }

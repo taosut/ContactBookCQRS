@@ -26,6 +26,19 @@ namespace ContactBookCQRS.Infra.Persistence.Repository
             await _dbContext.Contacts.AddAsync(entity, cancellationToken);
         }
 
+        public void DeleteContact(Guid userId,
+            Guid contactId, CancellationToken cancellationToken = default)
+        {
+            var query = from ct in _dbContext.Contacts
+                        join ca in _dbContext.Categories on ct.CategoryId equals ca.Id
+                        join cb in _dbContext.ContactBooks on ca.ContactBookId equals cb.Id
+                        where cb.UserId == userId && ct.Id == contactId
+                        select ct;
+
+            var contact = query.AsQueryable().FirstOrDefault();
+            _dbContext.Contacts.Remove(contact);
+        }
+
         public Contact GetByEmail(string email)
         {
             return _dbContext.Contacts.AsNoTracking().FirstOrDefault(c => c.Email == email);

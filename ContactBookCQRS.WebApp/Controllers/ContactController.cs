@@ -29,6 +29,14 @@ namespace ContactBookCQRS.WebApp.Controllers
             _contactAppService = contactAppService;
         }
 
+        [Authorize(Policy = "CanWriteData")]
+        [HttpDelete, Route("{contactId:guid}")]
+        public IActionResult Delete([FromRoute]Guid contactId)
+        {
+            _contactAppService.DeleteContact(UserId, contactId);
+            return Ok();
+        }
+
         [HttpPost]
         [Authorize(Policy = "CanWriteData")]
         public IActionResult Post([FromBody]ContactViewModel contactViewModel)

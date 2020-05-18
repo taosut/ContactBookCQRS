@@ -8,6 +8,12 @@ namespace ContactBookCQRS.Domain.Validations
 {
     public abstract class ContactValidation<T> : AbstractValidator<T> where T : ContactCommand
     {
+        protected void ValidateId()
+        {
+            RuleFor(c => c.Id)
+                .NotEqual(Guid.Empty);
+        }
+
         protected void ValidateName()
         {
             RuleFor(c => c.Name)
