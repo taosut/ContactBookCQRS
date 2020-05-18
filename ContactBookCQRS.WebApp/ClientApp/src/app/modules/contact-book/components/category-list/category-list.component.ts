@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentFactory, ComponentRef, Output, EventEmitter } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { Category } from 'app/core/models/Category';
 import { CategoryService } from '../../category.service';
 import { faPlusCircle, faMinusCircle, faEdit, faUser } from '@fortawesome/free-solid-svg-icons';

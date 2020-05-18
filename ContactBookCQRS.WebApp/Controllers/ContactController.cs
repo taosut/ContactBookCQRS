@@ -48,7 +48,6 @@ namespace ContactBookCQRS.WebApp.Controllers
             }
 
             _contactAppService.CreateContact(contactViewModel);
-
             return Response(contactViewModel);
         }
 
@@ -68,7 +67,7 @@ namespace ContactBookCQRS.WebApp.Controllers
             }
 
             _contactAppService.UpdateContact(contactId, contactViewModel);
-            return Ok();
+            return Response(contactViewModel);
         }
     }
 }

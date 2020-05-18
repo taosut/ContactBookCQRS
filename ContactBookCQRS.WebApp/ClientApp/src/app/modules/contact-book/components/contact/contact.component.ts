@@ -50,6 +50,7 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit() {
+
     this.submitted = true;
 
     // stop here if form is invalid
@@ -84,8 +85,8 @@ export class ContactComponent implements OnInit {
         this.reloadContacts.emit(this.contact.categoryId);
       },
       error => {
-          this.error = error;
-          this.loading = false;
+        this.error = error;
+        this.loading = false;
       });
   }
 
@@ -94,6 +95,7 @@ export class ContactComponent implements OnInit {
     if (this.contactForm.invalid) {
         return;
     }
+
     this.loading = true;
     this.contactService.updateContact(this.contact)
     .subscribe(
@@ -101,8 +103,9 @@ export class ContactComponent implements OnInit {
         this.cancel();
       },
       error => {
-          this.error = error;
-          this.loading = false;
+        this.error = error;
+        this.loading = false;
+        this.isEditMode = true;
       });
   }
 
@@ -114,8 +117,8 @@ export class ContactComponent implements OnInit {
         this.reloadContacts.emit(this.contact.categoryId);
       },
       error => {
-          this.error = error;
-          this.loading = false;
+        this.error = error;
+        this.loading = false;
       });
   }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using ContactBookCQRS.Infra.CrossCutting.Identity;
 using ContactBookCQRS.Infra.CrossCutting.Identity.Authorization;
 using ContactBookCQRS.Infra.CrossCutting.Identity.Models;
 using ContactBookCQRS.Infra.Persistence.Context;

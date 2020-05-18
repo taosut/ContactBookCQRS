@@ -5,9 +5,7 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
-import { ErrorService } from './../services/error-handling/error.service';
 import { NotificationService } from '../services/notification.service';
-import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Injectable()
@@ -19,25 +17,39 @@ export class ServerErrorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    let message;
-    const errorService = this.injector.get(ErrorService);
+    let errorMessage: string;
     const notifier = this.injector.get(NotificationService);
 
     return next.handle(request).pipe(
-      retry(1),
+      //retry(1),
       catchError((error: any) => {
         if (error instanceof HttpErrorResponse) {
           if (error.status === 401) {
-            message = 'Invalid access authentication provided';
-            notifier.showError(message);
+            errorMessage = 'Invalid access authentication provided';
+            notifier.showError(errorMessage);
             this.authenticationService.logout();
           } else {
-            message = errorService.getServerErrorMessage(error);
-            notifier.showError(message);
+            errorMessage = this.sumarizeErrors(error);
+            notifier.showError(errorMessage);
             return throwError(error);
           }
         }
       }));
+  }
+
+  sumarizeErrors(errorResponse: any): string {
+    let errorList: string[];
+    let errorMessage: string = ' ';
+    if(errorResponse && errorResponse.error) {
+      errorList = errorResponse.error.errors;
+      if(errorList.length > 0 ){
+        errorList.forEach(message => {
+          errorMessage = errorMessage.concat(message);
+        });
+      }
+    }
+
+    return errorMessage;
   }
 }
 
@@ -46,3 +58,4 @@ export const ErrorInterceptorProvider = {
     useClass: ServerErrorInterceptor,
     multi: true
 };
+
