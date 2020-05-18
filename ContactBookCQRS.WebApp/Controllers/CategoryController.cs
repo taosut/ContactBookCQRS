@@ -61,7 +61,7 @@ namespace ContactBookCQRS.WebApp.Controllers
             return Response(categoryViewModel);
         }
 
-        [Authorize(Policy = "CanWriteData")]
+        [Authorize(Policy = "CanDeleteData")]
         [HttpDelete, Route("{categoryId:guid}")]
         public IActionResult Delete([FromRoute]Guid categoryId)
         {

@@ -76,8 +76,9 @@ namespace ContactBookCQRS.WebApp.Controllers
                 return Response(userRegistration);
             }
 
-            // User claim for write
-            await _userManager.AddClaimAsync(user, new Claim("ContactBookOwner", "Write"));
+            // User claim for write and delete
+            await _userManager.AddClaimAsync(user, new Claim("CanWriteData", "Write"));
+            await _userManager.AddClaimAsync(user, new Claim("CanDeleteData", "Delete"));
 
             // Creates a ContactBook for the user
             _contactBookAppService.CreateContactBook(user.Id);

@@ -22,8 +22,8 @@ namespace ContactBookCQRS.WebApp.Configurations
                 throw new ArgumentNullException(nameof(services));
 
             services.AddIdentity<User, IdentityRole<Guid>>()
-                .AddUserStore<UserStore<User, Role, ApplicationDbContext, Guid>>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddUserStore<UserStore<User, Role, IdentityContext, Guid>>()
+                .AddEntityFrameworkStores<IdentityContext>()
                 .AddDefaultTokenProviders();
 
             // JWT Setup
@@ -66,8 +66,8 @@ namespace ContactBookCQRS.WebApp.Configurations
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("CanWriteData", policy => policy.Requirements.Add(new ClaimRequirement("ContactBookOwner", "Write")));
-                options.AddPolicy("CanRemoveData", policy => policy.Requirements.Add(new ClaimRequirement("ContactBookOwner", "Remove")));
+                options.AddPolicy("CanWriteData", policy => policy.Requirements.Add(new ClaimRequirement("CanWriteData", "Write")));
+                options.AddPolicy("CanDeleteData", policy => policy.Requirements.Add(new ClaimRequirement("CanDeleteData", "Delete")));
             });
         }
     }

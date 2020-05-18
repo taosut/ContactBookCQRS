@@ -1,16 +1,16 @@
 ﻿using ContactBookCQRS.Domain.Models;
+using ContactBookCQRS.Infra.CrossCutting.Identity.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace ContactBookCQRS.Infra.CrossCutting.Identity.Models
+namespace ContactBookCQRS.Infra.Persistence.Context
 {
-    public class ApplicationDbContext : IdentityDbContext<User, Role, Guid>
+    public class IdentityContext : IdentityDbContext<User, Role, Guid>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public IdentityContext(DbContextOptions<IdentityContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

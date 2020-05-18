@@ -57,7 +57,7 @@ namespace ContactBookCQRS.Infrastructure.CrossCutting.IoC
             // Infra Identity - Persistence
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IUserUnitOfWork, UserUnitOfWork>();
-            services.AddScoped<ApplicationDbContext>();
+            services.AddScoped<IdentityContext>();
 
             // Infra - Data EventSourcing
             services.AddScoped<IEventStoreRepository, EventStoreRepository>();

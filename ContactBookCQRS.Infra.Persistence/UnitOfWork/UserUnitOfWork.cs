@@ -8,10 +8,10 @@ using System.Text;
 
 namespace ContactBookCQRS.Infra.Persistence.UnitOfWork
 {
-    public class UserUnitOfWork : UnitOfWork<ApplicationDbContext>, IUserUnitOfWork
+    public class UserUnitOfWork : UnitOfWork<IdentityContext>, IUserUnitOfWork
     {
         public UserUnitOfWork(
-            ApplicationDbContext dbContext,
+            IdentityContext dbContext,
             IUsersRepository usersRepository
             ) : base(dbContext)
         {

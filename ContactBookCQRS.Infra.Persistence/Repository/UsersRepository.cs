@@ -13,9 +13,9 @@ namespace ContactBookCQRS.Infra.Persistence.Repository
 {
     public class UsersRepository : IUsersRepository
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IdentityContext _dbContext;
 
-        public UsersRepository(ApplicationDbContext dbContext)
+        public UsersRepository(IdentityContext dbContext)
         {
             _dbContext = dbContext;
         }

@@ -29,7 +29,7 @@ namespace ContactBookCQRS.WebApp.Controllers
             _contactAppService = contactAppService;
         }
 
-        [Authorize(Policy = "CanWriteData")]
+        [Authorize(Policy = "CanDeleteData")]
         [HttpDelete, Route("{contactId:guid}")]
         public IActionResult Delete([FromRoute]Guid contactId)
         {
