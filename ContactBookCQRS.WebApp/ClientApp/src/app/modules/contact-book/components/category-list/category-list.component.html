@@ -1,22 +1,23 @@
 <div class="row">
   <div class="header">
     <div class="title">
-      <h5>Categories</h5>
+      <h5>My contacts</h5>
       <p *ngIf="!categories">
         <em>Loading...</em>
       </p>
     </div>
-    <div class="actions">
+    <div class="align-to-right">
       <button type="button" class="btn btn-light"
         (click)="addEditCategory()">
         <fa-icon [icon]="faPlusCircle" class="buttonCreateColor"
-        title="Create category"></fa-icon>
+        title="Create category" alt="Create category"></fa-icon>
       </button>
     </div>
   </div>
 </div>
 
 <template #categoryContainer></template>
+<template #contactContainer></template>
 
 <div class="row">
   <div class="col">
@@ -26,19 +27,21 @@
         <!--actions-->
         <div class="tab-small">
           <fa-icon [icon]="faMinusCircle" (click)="deleteCategory(category)"
-          class="btn btn-light buttonRemoveColor" title="Delete category"></fa-icon>
+            class="btn btn-light buttonRemoveColor" title="Delete category"></fa-icon>
           <fa-icon [icon]="faEdit" (click)="addEditCategory(category)"
-          class="btn btn-light buttonEditColor" title="Edit category"></fa-icon>
+            class="btn btn-light buttonEditColor" title="Edit category"></fa-icon>
+            <fa-icon [icon]="faUser" (click)="addContact(category.id)"
+            class="btn btn-light buttonCreateColor" title="Add contact"></fa-icon>
         </div>
 
         <input type="checkbox" id="{{i}}" (change)="toggle(category.id, $event)"/>
         <label class="tab-label" for="{{i}}">{{category.name}}</label>
 
         <!--contacts-->
-        <div class="tab-content" *ngFor="let contact of category.contacts; let j = index">
-          <app-contact [contact]="contact"></app-contact>
+        <div class="tab-content">
+          <app-contact [contact]="contact" (reloadContacts)='getContacts($event)' *ngFor="let contact of category.contacts; let j = index" >
+          </app-contact>
         </div>
-
       </div>
     </div>
   </div>

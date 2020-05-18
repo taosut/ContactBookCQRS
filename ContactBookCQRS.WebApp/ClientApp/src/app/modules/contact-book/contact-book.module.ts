@@ -6,6 +6,7 @@ import { CategoryService } from './category.service';
 import { SharedModule } from 'app/shared/shared.module';
 import { CategoryComponent } from './components/category/category.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { ContactService } from './contact.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ContactComponent } from './components/contact/contact.component';
     SharedModule
   ],
   providers: [
-    CategoryService
+    CategoryService,
+    ContactService
   ]
 })
 export class ContactBookModule { }

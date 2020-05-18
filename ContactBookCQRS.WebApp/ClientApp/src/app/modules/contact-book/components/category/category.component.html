@@ -1,18 +1,18 @@
 <div class="backgrop-container">
   <div class="wrapper fadeInDown form-position">
-    <div id="formContent">
+    <div class="formContent">
       <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
-          <input type="text" id="name" name="name" [(ngModel)]="category.name"
-            formControlName="name" class="fadeIn second" placeholder="Name"
+          <input type="text" id="name" name="name" placeholder="Name"
+            [(ngModel)]="category.name" formControlName="name"
             [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
           <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
               <div *ngIf="f.name.errors.required">Name is required</div>
           </div>
         </div>
-        <div class="pull-left">
-          <input [disabled]="loading" type="button"  (click)="cancel()" class="fadeIn fourth pull-left cancel-button" value="Cancel">
-          <input [disabled]="loading" type="submit" class="fadeIn fourth pull-left" value="Save">
+        <div class="formFooter">
+          <input [disabled]="loading" type="button"  (click)="cancel()" class="fadeIn first cancel-button" value="Cancel">
+          <input [disabled]="loading" type="submit" class="fadeIn first" value="Save">
         </div>
         <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
       </form>

@@ -1,67 +1,77 @@
-<div class="contact-container">
-  <div class="row">
-    <div class="actions">
-      <button type="button" class="btn btn-danger">
-        <fa-icon [icon]="faMinusCircle"></fa-icon>
-      </button>
-      <button type="button" class="btn btn-secondary"
-        (click)="setEditable()">
-        <fa-icon [icon]="faEdit"></fa-icon>
-      </button>
+<div [ngClass]="{ 'backgrop-container': isNewContact }">
+  <div [ngClass]="{ 'wrapper fadeInDown form-position': isNewContact }">
+
+    <div class="contact-container">
+      <div class="row" *ngIf="!isNewContact">
+        <button type="button" class="btn btn-light buttonRemoveColor"
+          (click)="deleteContact()">
+          <fa-icon [icon]="faMinusCircle"></fa-icon>
+        </button>
+        <button type="button" class="btn btn-light buttonEditColor"
+          (click)="setEditable()">
+          <fa-icon [icon]="faEdit"></fa-icon>
+        </button>
+      </div>
+
+      <div [ngClass]="{ 'contactFormContent': isNewContact }">
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-2">
+              <span class="label-bold">Name</span>
+            </div>
+            <div class="col-md-10">
+              <span class="label" *ngIf="!isEditMode">{{ contact.name }}</span>
+              <div class="form-group" *ngIf="isEditMode ">
+                <input type="text" id="name" name="name" formControlName="name"
+                  [(ngModel)]="contact.name" placeholder="Name"
+                  [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                    <div *ngIf="f.name.errors.required">Name is required</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <span class="label-bold">E-mail</span>
+            </div>
+            <div class="col-md-10">
+              <span class="label" *ngIf="!isEditMode">{{ contact.email }}</span>
+              <div class="form-group" *ngIf="isEditMode">
+                <input type="text" id="name" name="email" formControlName="email"
+                [(ngModel)]="contact.email" placeholder="E-mail"
+                  [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                    <div *ngIf="f.email.errors.required">E-mail is required</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <span class="label-bold">Birth date</span>
+            </div>
+            <div class="col-md-10">
+              <span class="label" *ngIf="!isEditMode">{{ contact.birthDate | date  }}</span>
+              <div class="form-group" *ngIf="isEditMode">
+                <input type="text" id="birthDate" name="birthDate" formControlName="birthDate"
+                  [(ngModel)]="contact.birthDate" placeholder="Date of Birth"
+                  [ngClass]="{ 'is-invalid': submitted && f.birthDate.errors }">
+                <div *ngIf="submitted && f.birthDate.errors" class="invalid-feedback">
+                    <div *ngIf="f.birthDate.errors.required">Birth date is required</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div [ngClass]="{'row': !isNewContact, 'formFooter': isNewContact }" *ngIf="isEditMode">
+            <div class="bottom-actions">
+              <input type="button" (click)="cancel()" class="fadeIn first cancel-button" value="Cancel">
+              <input type="submit" class="fadeIn first" value="Save">
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
+
   </div>
-
-  <div>
-    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
-      <div class="row">
-        <div class="col-md-1">
-          <span class="label-bold">Name</span>
-        </div>
-        <div class="col-md-11">
-          <span class="label" *ngIf="!isEditable">{{ contact.name }}</span>
-
-          <div class="form-group" *ngIf="isEditable">
-            <input type="text" id="name" name="name" formControlName="name" class="fadeIn second" placeholder="Name"
-              [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
-            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-                <div *ngIf="f.name.errors.required">Name is required</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-1">
-          <span class="label-bold">E-mail</span>
-        </div>
-        <div class="col-md-11">
-          <span class="label" *ngIf="!isEditable">{{ contact.email }}</span>
-
-          <div class="form-group" *ngIf="isEditable">
-            <input type="text" id="name" name="email" formControlName="email" class="fadeIn second" placeholder="E-mail"
-              [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
-            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-                <div *ngIf="f.email.errors.required">E-mail is required</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-1">
-          <span class="label-bold">Birthday</span>
-        </div>
-        <div class="col-md-11">
-          <span class="label" *ngIf="!isEditable">{{ contact.birthDate | date  }}</span>
-
-          <div class="form-group" *ngIf="isEditable">
-            <input type="text" id="birthDay" name="birthDay" formControlName="birthDay" class="fadeIn second" placeholder="Birthday"
-              [ngClass]="{ 'is-invalid': submitted && f.birthDay.errors }">
-            <div *ngIf="submitted && f.birthDay.errors" class="invalid-feedback">
-                <div *ngIf="f.birthDay.errors.required">Birthday is required</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
-
 </div>

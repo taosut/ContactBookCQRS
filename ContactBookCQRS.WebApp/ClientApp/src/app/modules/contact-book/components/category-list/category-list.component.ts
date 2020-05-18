@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentFactory, ComponentRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentFactory, ComponentRef, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Category } from 'app/core/models/Category';
 import { CategoryService } from '../../category.service';
-import { delay } from 'rxjs/operators';
-import { faPlusCircle, faMinusCircle, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faPlusCircle, faMinusCircle, faEdit, faUser } from '@fortawesome/free-solid-svg-icons';
 import { CategoryComponent } from '../category/category.component';
+import { Contact } from 'app/core/models/Contact';
+import { ContactComponent } from '../contact/contact.component';
 
 @Component({
   selector: 'app-category-list',
@@ -13,15 +14,20 @@ import { CategoryComponent } from '../category/category.component';
 })
 export class CategoryListComponent implements OnInit {
 
+  @ViewChild("categoryContainer", { read: ViewContainerRef }) categoryContainer;
+  @ViewChild("contactContainer", { read: ViewContainerRef }) contactContainer;
+
   categories: Category[];
+  categoryToEdit: Category;
+  categoryComponentRef: any;
+  contactComponentRef: any;
   createEditCategory = false;
+
   faPlusCircle = faPlusCircle;
   faMinusCircle = faMinusCircle;
   faEdit = faEdit;
-  categoryToEdit: Category;
-  componentRef: any;
+  faUser = faUser;
 
-  @ViewChild("categoryContainer", { read: ViewContainerRef }) container;
 
   constructor(
     private categoryService: CategoryService,
@@ -33,18 +39,36 @@ export class CategoryListComponent implements OnInit {
   }
 
   addEditCategory(category?: Category) {
-    this.container.clear();
+    this.categoryContainer.clear();
     const factory = this.resolver.resolveComponentFactory(CategoryComponent);
-    this.componentRef = this.container.createComponent(factory);
-    this.componentRef.instance.category = category;
-    this.componentRef.instance.editMode = category ? true : false;
+    this.categoryComponentRef = this.categoryContainer.createComponent(factory);
+    this.categoryComponentRef.instance.category = category;
+    this.categoryComponentRef.instance.editMode = category ? true : false;
 
-    this.componentRef.instance.loadCategoryList.subscribe(event => {
-      this.destroyAndReload();
+    this.categoryComponentRef.instance.loadCategoryList.subscribe(event => {
+      this.destroyCategoryAndReload();
     });
 
-    this.componentRef.instance.destroyComponent.subscribe(event => {
-      this.destroyAndReload();
+    this.categoryComponentRef.instance.destroyComponent.subscribe(event => {
+      this.destroyCategoryAndReload();
+    });
+  }
+
+  addContact(categoryId: string) {
+    this.contactContainer.clear();
+    const factory = this.resolver.resolveComponentFactory(ContactComponent);
+    this.contactComponentRef = this.contactContainer.createComponent(factory);
+    this.contactComponentRef.instance.contact = new Contact(categoryId);
+    this.contactComponentRef.instance.isEditMode = true;
+    this.contactComponentRef.instance.isNewContact = true;
+
+    this.contactComponentRef.instance.reloadContacts.subscribe(event => {
+      this.getContacts(categoryId);
+      this.contactComponentRef.destroy();
+    });
+
+    this.contactComponentRef.instance.destroyComponent.subscribe(event => {
+      this.contactComponentRef.destroy();
     });
   }
 
@@ -54,8 +78,8 @@ export class CategoryListComponent implements OnInit {
     }
   }
 
-  destroyAndReload() {
-    this.componentRef.destroy();
+  destroyCategoryAndReload() {
+    this.categoryComponentRef.destroy();
     this.loadCategoryList();
   }
 
@@ -70,10 +94,8 @@ export class CategoryListComponent implements OnInit {
 
   getContacts(categoryId: string) {
     var category = this.categories.filter((category : Category) => category.id === categoryId);
-
     if(category) {
       this.categoryService.getContacts(categoryId)
-      //.pipe(delay(1000))
       .subscribe((result: any) => {
         category[0].contacts = result.data;
       },
@@ -84,7 +106,6 @@ export class CategoryListComponent implements OnInit {
   deleteCategory(category: Category){
     if(category) {
       this.categoryService.deleteCategory(category.id)
-      //.pipe(delay(1000))
       .subscribe((result: any) => {
         this.loadCategoryList();
       },

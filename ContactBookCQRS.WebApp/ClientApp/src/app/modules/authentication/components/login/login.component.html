@@ -1,5 +1,5 @@
 <div class="wrapper fadeInDown">
-  <div id="formContent">
+  <div class="formContent">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <input type="text" id="email" name="email" formControlName="email" class="fadeIn second" placeholder="Login"
@@ -19,8 +19,7 @@
       <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
     </form>
 
-    <!-- Remind Passowrd -->
-    <div id="formFooter">
+    <div class="formFooter">
       <a class="underlineHover" href="#">Create my account</a>
     </div>
 

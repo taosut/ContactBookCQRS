@@ -15,7 +15,7 @@ export class CategoryComponent implements OnInit {
   @Output("destroyComponent") destroyComponent: EventEmitter<any> = new EventEmitter();
 
   category: Category;
-  editMode: boolean;
+  isEditMode: boolean;
   categoryForm: FormGroup;
   loading = false;
   submitted = false;
@@ -55,7 +55,7 @@ export class CategoryComponent implements OnInit {
     }
 
     //Create category
-    if(!this.editMode) {
+    if(!this.isEditMode) {
       this.createCategory();
     }
     else { //Update category
