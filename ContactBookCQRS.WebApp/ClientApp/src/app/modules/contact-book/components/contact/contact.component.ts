@@ -81,7 +81,7 @@ export class ContactComponent implements OnInit {
     this.contactService.createContact(this.contact)
     .subscribe(
       data => {
-        this.reloadContacts.emit();
+        this.reloadContacts.emit(this.contact.categoryId);
       },
       error => {
           this.error = error;

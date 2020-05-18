@@ -2,7 +2,7 @@
   <div [ngClass]="{ 'wrapper fadeInDown form-position': isNewContact }">
 
     <div class="contact-container">
-      <div class="row" *ngIf="!isNewContact">
+      <div class="row actions-menu" *ngIf="!isNewContact">
         <button type="button" class="btn btn-light buttonRemoveColor"
           (click)="deleteContact()">
           <fa-icon [icon]="faMinusCircle"></fa-icon>
@@ -16,10 +16,12 @@
       <div [ngClass]="{ 'contactFormContent': isNewContact }">
         <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
           <div class="row">
-            <div class="col-md-2">
-              <span class="label-bold">Name</span>
+            <div class="title-column">
+              <span class="label-bold" *ngIf="!isNewContact">
+                Name
+              </span>
             </div>
-            <div class="col-md-10">
+            <div class="right-column">
               <span class="label" *ngIf="!isEditMode">{{ contact.name }}</span>
               <div class="form-group" *ngIf="isEditMode ">
                 <input type="text" id="name" name="name" formControlName="name"
@@ -32,15 +34,17 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-2">
-              <span class="label-bold">E-mail</span>
+            <div class="title-column">
+              <span class="label-bold" *ngIf="!isNewContact">
+                E-mail
+              </span>
             </div>
-            <div class="col-md-10">
+            <div class="right-column">
               <span class="label" *ngIf="!isEditMode">{{ contact.email }}</span>
-              <div class="form-group" *ngIf="isEditMode">
-                <input type="text" id="name" name="email" formControlName="email"
-                [(ngModel)]="contact.email" placeholder="E-mail"
-                  [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+              <div class="form-group" *ngIf="isEditMode ">
+                <input type="text" id="email" name="email" formControlName="email"
+                  [(ngModel)]="contact.email" placeholder="E-mail"
+                  [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
                 <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
                     <div *ngIf="f.email.errors.required">E-mail is required</div>
                 </div>
@@ -48,14 +52,16 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-2">
-              <span class="label-bold">Birth date</span>
+            <div class="title-column">
+              <span class="label-bold" *ngIf="!isNewContact">
+                Birth date
+              </span>
             </div>
-            <div class="col-md-10">
-              <span class="label" *ngIf="!isEditMode">{{ contact.birthDate | date  }}</span>
-              <div class="form-group" *ngIf="isEditMode">
+            <div class="right-column">
+              <span class="label" *ngIf="!isEditMode">{{ contact.birthDate }}</span>
+              <div class="form-group" *ngIf="isEditMode ">
                 <input type="text" id="birthDate" name="birthDate" formControlName="birthDate"
-                  [(ngModel)]="contact.birthDate" placeholder="Date of Birth"
+                  [(ngModel)]="contact.birthDate" placeholder="Birth date"
                   [ngClass]="{ 'is-invalid': submitted && f.birthDate.errors }">
                 <div *ngIf="submitted && f.birthDate.errors" class="invalid-feedback">
                     <div *ngIf="f.birthDate.errors.required">Birth date is required</div>
@@ -63,15 +69,13 @@
               </div>
             </div>
           </div>
-          <div [ngClass]="{'row': !isNewContact, 'formFooter': isNewContact }" *ngIf="isEditMode">
-            <div class="bottom-actions">
-              <input type="button" (click)="cancel()" class="fadeIn first cancel-button" value="Cancel">
-              <input type="submit" class="fadeIn first" value="Save">
-            </div>
+          <div [ngClass]="{'edit-footer': !isNewContact, 'formFooter': isNewContact }" *ngIf="isEditMode">
+            <input type="button" (click)="cancel()" class="cancel-button" value="Cancel">
+            <input type="submit" value="Save">
           </div>
         </form>
       </div>
-    </div>
 
+    </div>
   </div>
 </div>

@@ -43,7 +43,7 @@ export class CategoryListComponent implements OnInit {
     const factory = this.resolver.resolveComponentFactory(CategoryComponent);
     this.categoryComponentRef = this.categoryContainer.createComponent(factory);
     this.categoryComponentRef.instance.category = category;
-    this.categoryComponentRef.instance.editMode = category ? true : false;
+    this.categoryComponentRef.instance.isEditMode = category ? true : false;
 
     this.categoryComponentRef.instance.loadCategoryList.subscribe(event => {
       this.destroyCategoryAndReload();
