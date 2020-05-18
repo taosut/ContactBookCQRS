@@ -17,6 +17,7 @@ using ContactBookCQRS.Infra.CrossCutting.Identity.Models;
 using ContactBookCQRS.Domain.Core.Events;
 using ContactBookCQRS.Infra.Persistence.Repository.EventSourcing;
 using ContactBookCQRS.Infra.Persistence.EventSourcing.Equinox.Infra.Data.EventSourcing;
+using ContactBookCQRS.Infra.CrossCutting.Identity.Services;
 
 namespace ContactBookCQRS.Infrastructure.CrossCutting.IoC
 {
@@ -34,6 +35,7 @@ namespace ContactBookCQRS.Infrastructure.CrossCutting.IoC
             services.AddScoped<IContactAppService, ContactAppService>();
             services.AddScoped<IContactBookAppService, ContactBookAppService>();
             services.AddScoped<ICategoryAppService, CategoryAppService>();
+            services.AddScoped<IAccountAppService, AccountAppService>();
 
             // Domain - Events
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
@@ -65,6 +67,7 @@ namespace ContactBookCQRS.Infrastructure.CrossCutting.IoC
             services.AddScoped<EventStoreContext>();
 
             // Infra - Identity
+            services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IUser, User>();
         }
     }
