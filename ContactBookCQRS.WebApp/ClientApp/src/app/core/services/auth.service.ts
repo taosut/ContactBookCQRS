@@ -19,6 +19,7 @@ export class AuthService extends RestService {
 
     // Observable string streams
     isLoggedAnnounced$ = this.isLogged.asObservable();
+    loggedUser$ = this.currentUser;
 
     constructor (http: HttpClient,
       private tokenStorageToken: TokenStorageService,

@@ -19,7 +19,6 @@ export class CategoryComponent implements OnInit {
   categoryForm: FormGroup;
   loading = false;
   submitted = false;
-  error = '';
 
   constructor(private formBuilder: FormBuilder,
               private categoryService: CategoryService,
@@ -69,11 +68,10 @@ export class CategoryComponent implements OnInit {
     this.categoryService.createCategory(this.category)
     .subscribe(
       data => {
-        this.loadCategoryList.emit();
+        this.loadCategoryList.emit(this.category);
       },
       error => {
-          this.error = error;
-          this.loading = false;
+        this.loading = false;
       });
   }
 
@@ -85,8 +83,7 @@ export class CategoryComponent implements OnInit {
         this.loadCategoryList.emit();
       },
       error => {
-          this.error = error;
-          this.loading = false;
+        this.loading = false;
       });
   }
 }

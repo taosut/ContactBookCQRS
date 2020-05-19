@@ -1,19 +1,27 @@
 import { Optional, SkipSelf, NgModule } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { JWT_OPTIONS, JwtModule  } from '@auth0/angular-jwt';
-import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './guards/auth.guard';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+import { NotificationService } from './services/notification.service';
+import { ConfirmationDialogService } from './services/confirmation-dialog.service';
 
 @NgModule({
   declarations: [
   ],
   imports: [
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot() // ToastrModule added,
   ],
   providers: [
     AuthService,
-    AuthGuard
+    AuthGuard,
+    BrowserAnimationsModule,
+    ToastrModule,
+    NotificationService,
+    ConfirmationDialogService
   ]
 })
 

@@ -58,11 +58,12 @@
               </span>
             </div>
             <div class="right-column">
-              <span class="label" *ngIf="!isEditMode">{{ contact.birthDate }}</span>
+              <span class="label" *ngIf="!isEditMode">{{ contact.birthDate | date }}</span>
               <div class="form-group" *ngIf="isEditMode ">
                 <input type="text" id="birthDate" name="birthDate" formControlName="birthDate"
-                  [(ngModel)]="contact.birthDate" placeholder="Birth date"
+                  placeholder="yyyy-mm-dd" [(ngModel)]="contact.birthDate" ngbDatepicker
                   [ngClass]="{ 'is-invalid': submitted && f.birthDate.errors }">
+
                 <div *ngIf="submitted && f.birthDate.errors" class="invalid-feedback">
                     <div *ngIf="f.birthDate.errors.required">Birth date is required</div>
                 </div>

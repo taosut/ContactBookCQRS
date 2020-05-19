@@ -15,13 +15,15 @@
           <li class="nav-item"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-dark" [routerLink]="['/home']">Home</a>
+            <a class="nav-link text-secondary underlineHover" [routerLink]="['/home']">Home</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/category-list']">My Contacts</a>
+            <a class="nav-link text-success underlineHover" [routerLink]="['/category-list']">My Contacts</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" (click)="logout()" style="cursor: pointer;">Logout</a>
+            <a class="nav-link text-primary underlineHover" (click)="logout()" style="cursor: pointer;">
+              Logout ({{loggedEmail}})
+            </a>
           </li>
         </ul>
       </div>

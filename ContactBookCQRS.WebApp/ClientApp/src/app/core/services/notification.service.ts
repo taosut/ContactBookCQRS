@@ -1,17 +1,18 @@
-import { Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
 
-  constructor() { }
+  constructor(private toastr: ToastrService) { }
 
   showSuccess(message: string): void {
-    alert(message);
+    this.toastr.success(message);
   }
 
   showError(message: string): void {
-    alert(message);
+    this.toastr.error(message);
   }
 }

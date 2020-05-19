@@ -39,7 +39,7 @@ namespace ContactBookCQRS.Domain.CommandHandlers
             // Checking if contact e-mail is already taken
             if (null != _contactUnitOfWork.ContactsRepository.GetByEmail(request.Email))
             {
-                _bus.RaiseEvent(new DomainNotification(request.MessageType, "The customer e-mail has already been taken."));
+                _bus.RaiseEvent(new DomainNotification(request.MessageType, "The contact e-mail has already been taken."));
                 return Task.FromResult(false);
             }
 
@@ -90,7 +90,7 @@ namespace ContactBookCQRS.Domain.CommandHandlers
             {                
                 if (!existingContact.Equals(contact))
                 {
-                    _bus.RaiseEvent(new DomainNotification(request.MessageType, "The customer e-mail has already been taken."));
+                    _bus.RaiseEvent(new DomainNotification(request.MessageType, "The contact e-mail has already been taken."));
                     return Task.FromResult(false);
                 }
             }

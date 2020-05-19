@@ -12,6 +12,7 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   isExpanded = false;
   isLoggedIn: boolean;
   subscription: Subscription;
+  loggedEmail: string;
 
   constructor (
     private authService: AuthService,
@@ -24,6 +25,13 @@ export class NavMenuComponent implements OnInit, OnDestroy {
       response => {
         this.isLoggedIn = response;
     });
+
+    this.getCurrentUserEmail();
+  }
+
+  getCurrentUserEmail(){
+    const currentUser = this.authService.currentUserValue;
+    this.loggedEmail = currentUser.email;
   }
 
   logout(){

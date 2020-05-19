@@ -22,8 +22,14 @@
 <div class="row">
   <div class="col">
     <div class="tabs">
-      <div class="tab" *ngFor="let category of categories; let i = index">
 
+      <div *ngIf="categories && categories.length == 0">
+        <div class="alert alert-warning alert-dismissible fade show">
+          <strong>Let's start!</strong> You can create as many categories as you want to group your contacts.
+        </div>
+      </div>
+
+      <div class="tab" *ngFor="let category of categories; let i = index">
         <!--actions-->
         <div class="tab-small">
           <fa-icon [icon]="faMinusCircle" (click)="deleteCategory(category)"
@@ -34,11 +40,17 @@
             class="btn btn-light buttonCreateColor" title="Add contact"></fa-icon>
         </div>
 
-        <input type="checkbox" id="{{i}}" (change)="toggle(category.id, $event)"/>
-        <label class="tab-label" for="{{i}}">{{category.name}}</label>
+        <input type="checkbox" id="category-{{i}}" (change)="toggle(category.id, $event)"/>
+        <label class="tab-label" for="category-{{i}}">{{category.name}}</label>
 
         <!--contacts-->
         <div class="tab-content">
+          <div *ngIf="category.contacts && category.contacts.length == 0">
+            <div class="alert alert-warning alert-dismissible fade show">
+              <strong>Let's add some contacts!</strong> You can create as many contacts as you want to this category.
+            </div>
+          </div>
+
           <app-contact [contact]="contact" (reloadContacts)='getContacts($event)' *ngFor="let contact of category.contacts; let j = index" >
           </app-contact>
         </div>

@@ -3,6 +3,7 @@ import { Contact } from 'app/core/models/Contact';
 import { faEdit, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ContactService } from '../../contact.service';
+import { ConfirmationDialogService } from 'app/core/services/confirmation-dialog.service';
 
 @Component({
   selector: 'app-contact',
@@ -20,12 +21,12 @@ export class ContactComponent implements OnInit {
   contactForm: FormGroup;
   loading = false;
   submitted = false;
-  error = '';
   faMinusCircle = faMinusCircle;
   faEdit = faEdit;
 
   constructor(private formBuilder: FormBuilder,
-              private contactService: ContactService) { }
+              private contactService: ContactService,
+              private confirmationDialogService: ConfirmationDialogService) { }
 
   ngOnInit() {
     this.contactForm = this.formBuilder.group({
@@ -33,10 +34,12 @@ export class ContactComponent implements OnInit {
       email: ['', Validators.required],
       birthDate: ['', Validators.required]
     });
+
   }
 
   setEditable(){
     this.isEditMode = !this.isEditMode;
+    this.contact.birthDate = new Date(this.contact.birthDate);
   }
 
   // getter for easy access to form fields
@@ -77,15 +80,13 @@ export class ContactComponent implements OnInit {
     this.loading = true;
     this.contact.name = this.f.name.value;
     this.contact.email = this.f.email.value;
-    this.contact.birthDate = this.f.birthDate.value;
-
+    this.contact.birthDate = new Date(this.f.birthDate.value);
     this.contactService.createContact(this.contact)
     .subscribe(
       data => {
         this.reloadContacts.emit(this.contact.categoryId);
       },
       error => {
-        this.error = error;
         this.loading = false;
       });
   }
@@ -97,29 +98,33 @@ export class ContactComponent implements OnInit {
     }
 
     this.loading = true;
+    this.contact.birthDate = new Date(this.f.birthDate.value);
+    console.info(this.contact.birthDate);
     this.contactService.updateContact(this.contact)
     .subscribe(
       data => {
         this.cancel();
       },
       error => {
-        this.error = error;
         this.loading = false;
-        this.isEditMode = true;
       });
   }
 
   deleteContact() {
-    this.loading = true;
-    this.contactService.deleteContact(this.contact.id)
-    .subscribe(
-      data => {
-        this.reloadContacts.emit(this.contact.categoryId);
-      },
-      error => {
-        this.error = error;
-        this.loading = false;
-      });
+    this.confirmationDialogService.confirm('Please confirm', 'Do you really want to remove this contact?')
+    .then((confirmed) => {
+      if(confirmed) {
+        this.contactService.deleteContact(this.contact.id)
+        .subscribe(
+          data => {
+            this.reloadContacts.emit(this.contact.categoryId);
+          },
+          error => {
+            this.loading = false;
+          });
+      }
+    })
+    .catch();
   }
 
 }

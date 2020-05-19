@@ -5,6 +5,7 @@ import { faPlusCircle, faMinusCircle, faEdit, faUser } from '@fortawesome/free-s
 import { CategoryComponent } from '../category/category.component';
 import { Contact } from 'app/core/models/Contact';
 import { ContactComponent } from '../contact/contact.component';
+import { ConfirmationDialogService } from 'app/core/services/confirmation-dialog.service';
 
 @Component({
   selector: 'app-category-list',
@@ -27,10 +28,10 @@ export class CategoryListComponent implements OnInit {
   faEdit = faEdit;
   faUser = faUser;
 
-
   constructor(
     private categoryService: CategoryService,
-    private resolver: ComponentFactoryResolver
+    private resolver: ComponentFactoryResolver,
+    private confirmationDialogService: ConfirmationDialogService
   ) { }
 
   ngOnInit() {
@@ -49,6 +50,7 @@ export class CategoryListComponent implements OnInit {
     });
 
     this.categoryComponentRef.instance.destroyComponent.subscribe(event => {
+      console.log(event);
       this.destroyCategoryAndReload();
     });
   }
@@ -92,7 +94,9 @@ export class CategoryListComponent implements OnInit {
   }
 
   getContacts(categoryId: string) {
-    var category = this.categories.filter((category : Category) => category.id === categoryId);
+    var category = this.categories.
+    filter((category : Category) => category.id === categoryId);
+
     if(category) {
       this.categoryService.getContacts(categoryId)
       .subscribe((result: any) => {
@@ -102,14 +106,17 @@ export class CategoryListComponent implements OnInit {
     }
   }
 
-  deleteCategory(category: Category){
-    if(category) {
-      this.categoryService.deleteCategory(category.id)
-      .subscribe((result: any) => {
-        this.loadCategoryList();
-      },
-      error => console.error(error));
-    }
+  deleteCategory(category: Category) {
+    this.confirmationDialogService.confirm('Please confirm', 'Do you really want to remove this category?')
+    .then((confirmed) => {
+      if(confirmed && category) {
+        this.categoryService.deleteCategory(category.id)
+        .subscribe((result: any) => {
+          this.loadCategoryList();
+        },
+        error => console.error(error));
+      }
+    })
+    .catch();
   }
-
 }

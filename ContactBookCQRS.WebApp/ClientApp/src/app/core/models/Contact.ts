@@ -3,7 +3,7 @@ export class Contact {
   categoryId: string;
   name: string;
   email: string;
-  birthDate: string;
+  birthDate: Date;
 
   constructor(categoryId: string) {
     this.categoryId = categoryId;

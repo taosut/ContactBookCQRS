@@ -7,6 +7,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { CategoryComponent } from './components/category/category.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { ContactService } from './contact.service';
+import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -17,11 +18,12 @@ import { ContactService } from './contact.service';
   ],
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    NgbDatepickerModule
   ],
   providers: [
     CategoryService,
-    ContactService
+    ContactService,
   ]
 })
 export class ContactBookModule { }
