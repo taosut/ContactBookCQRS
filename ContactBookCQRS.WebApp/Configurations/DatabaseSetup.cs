@@ -16,14 +16,16 @@ namespace ContactBookCQRS.WebApp.Configurations
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            services.AddDbContext<IdentityContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            string connString = configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<ContactBookContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContextPool<IdentityContext>(options =>
+                options.UseSqlServer(connString));
 
-            services.AddDbContext<EventStoreContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContextPool<ContactBookContext>(options =>
+                options.UseSqlServer(connString));
+
+            services.AddDbContextPool<EventStoreContext>(options =>
+                options.UseSqlServer(connString));
         }
     }
 }
