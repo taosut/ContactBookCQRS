@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { AuthService } from 'app/core/services/auth.service';
 import { TokenStorageService } from 'app/core/token-storage.service';
 import { Subscription } from 'rxjs';
@@ -24,14 +24,18 @@ export class NavMenuComponent implements OnInit, OnDestroy {
     this.subscription = this.authService.isLoggedAnnounced$.subscribe(
       response => {
         this.isLoggedIn = response;
+        this.getCurrentUserEmail();
     });
 
     this.getCurrentUserEmail();
   }
 
   getCurrentUserEmail(){
-    const currentUser = this.authService.currentUserValue;
-    this.loggedEmail = currentUser.email;
+    if(this.isLoggedIn){
+      const currentUser = this.authService.currentUser.subscribe(user => {
+        this.loggedEmail = user ? user.email : '';
+      });
+    }
   }
 
   logout(){

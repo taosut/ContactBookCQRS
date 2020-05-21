@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { Category } from 'app/core/models/Category';
 import { CategoryService } from '../../category.service';
-import { faPlusCircle, faMinusCircle, faEdit, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faPlusCircle, faMinusCircle, faEdit, faUser, faHistory } from '@fortawesome/free-solid-svg-icons';
 import { CategoryComponent } from '../category/category.component';
 import { Contact } from 'app/core/models/Contact';
 import { ContactComponent } from '../contact/contact.component';
 import { ConfirmationDialogService } from 'app/core/services/confirmation-dialog.service';
+import { HistoryViewerComponent } from '../history-viewer/history-viewer.component';
 
 @Component({
   selector: 'app-category-list',
@@ -16,17 +17,20 @@ export class CategoryListComponent implements OnInit {
 
   @ViewChild("categoryContainer", { read: ViewContainerRef }) categoryContainer;
   @ViewChild("contactContainer", { read: ViewContainerRef }) contactContainer;
+  @ViewChild("historyViewerContainer", { read: ViewContainerRef }) historyViewerContainer;
 
   categories: Category[];
   categoryToEdit: Category;
   categoryComponentRef: any;
   contactComponentRef: any;
+  historyViewerComponentRef: any;
   createEditCategory = false;
 
   faPlusCircle = faPlusCircle;
   faMinusCircle = faMinusCircle;
   faEdit = faEdit;
   faUser = faUser;
+  faHistory = faHistory;
 
   constructor(
     private categoryService: CategoryService,
@@ -71,6 +75,12 @@ export class CategoryListComponent implements OnInit {
     this.contactComponentRef.instance.destroyComponent.subscribe(event => {
       this.contactComponentRef.destroy();
     });
+  }
+
+  showHistoryViewer(categoryId: string) {
+    this.historyViewerContainer.clear();
+    const factory = this.resolver.resolveComponentFactory(HistoryViewerComponent);
+    this.historyViewerComponentRef = this.historyViewerContainer.createComponent(factory);
   }
 
   toggle(categoryId: string, e){

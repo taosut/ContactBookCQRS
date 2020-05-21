@@ -1,4 +1,3 @@
-
 /* STRUCTURE */
 .wrapper {
   display: flex;
@@ -90,7 +89,7 @@ input[type=button]:active, input[type=submit]:active, input[type=reset]:active  
 }
 
 input[type=text], input[type=password], input[type=date] {
-  background-color: #f6f6f6;
+  background-color: #ffffff;
   border: none;
   color: #0d0d0d;
   padding: 15px 32px;
@@ -110,7 +109,7 @@ input[type=text], input[type=password], input[type=date] {
   border-radius: 5px 5px 5px 5px;
 }
 
-input[type=text], input[type=password]:focus {
+input[type=text], input[type=password], input[type=date]:focus {
   background-color: #fff;
   border-bottom: 2px solid #5fbae9;
 }

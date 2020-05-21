@@ -32,9 +32,9 @@ export class ContactComponent implements OnInit {
     this.contactForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', Validators.required],
-      birthDate: ['', Validators.required]
+      birthDate: ['', Validators.required],
+      phoneNumber: ['', Validators.required]
     });
-
   }
 
   setEditable(){
@@ -81,6 +81,8 @@ export class ContactComponent implements OnInit {
     this.contact.name = this.f.name.value;
     this.contact.email = this.f.email.value;
     this.contact.birthDate = new Date(this.f.birthDate.value);
+    this.contact.phoneNumber = this.f.phoneNumber.value;
+
     this.contactService.createContact(this.contact)
     .subscribe(
       data => {
@@ -99,7 +101,6 @@ export class ContactComponent implements OnInit {
 
     this.loading = true;
     this.contact.birthDate = new Date(this.f.birthDate.value);
-    console.info(this.contact.birthDate);
     this.contactService.updateContact(this.contact)
     .subscribe(
       data => {

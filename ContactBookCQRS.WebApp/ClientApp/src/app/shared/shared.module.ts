@@ -6,6 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgbDateAdapter, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { GithubButtonModule } from 'ng-github-button';
 
 @NgModule({
   declarations: [
@@ -17,14 +18,16 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     RouterModule,
     FontAwesomeModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    GithubButtonModule
   ],
   exports: [
     NavMenuComponent,
     ConfirmationDialogComponent,
     FontAwesomeModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    GithubButtonModule
   ],
   providers: [{
     provide: NgbDateAdapter,

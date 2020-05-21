@@ -8,22 +8,24 @@ import { CategoryComponent } from './components/category/category.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { ContactService } from './contact.service';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { HistoryViewerComponent } from './components/history-viewer/history-viewer.component';
 
 @NgModule({
-  declarations: [
-    HomeComponent,
-    CategoryListComponent,
-    CategoryComponent,
-    ContactComponent
-  ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    NgbDatepickerModule
-  ],
-  providers: [
-    CategoryService,
-    ContactService,
-  ]
+   declarations: [
+      HomeComponent,
+      CategoryListComponent,
+      CategoryComponent,
+      ContactComponent,
+      HistoryViewerComponent
+   ],
+   imports: [
+      CommonModule,
+      SharedModule,
+      NgbDatepickerModule
+   ],
+   providers: [
+      CategoryService,
+      ContactService
+   ]
 })
 export class ContactBookModule { }

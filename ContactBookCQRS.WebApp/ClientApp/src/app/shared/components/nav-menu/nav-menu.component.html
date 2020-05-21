@@ -18,11 +18,11 @@
             <a class="nav-link text-secondary underlineHover" [routerLink]="['/home']">Home</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-success underlineHover" [routerLink]="['/category-list']">My Contacts</a>
+            <a class="nav-link text-secondary  underlineHover" [routerLink]="['/category-list']">My Contacts</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-primary underlineHover" (click)="logout()" style="cursor: pointer;">
-              Logout ({{loggedEmail}})
+              Logout {{loggedEmail}}
             </a>
           </li>
         </ul>

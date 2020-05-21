@@ -1,4 +1,3 @@
-
 /* STRUCTURE */
 .wrapper {
   display: flex;
@@ -42,6 +41,19 @@
   text-align: center;
   -webkit-border-radius: 0 0 10px 10px;
   border-radius: 0 0 10px 10px;
+}
+
+.is-invalid {
+  border:1px solid #ff8080 !important;
+}
+
+.invalid-feedback {
+  display: none;
+  width: 100%;
+  margin-top: .25rem;
+  font-size: 80%;
+  padding-left: 10px;
+  color: #dc3545;
 }
 
 /* TABS */
@@ -244,4 +256,8 @@ input[type=text], input[type=password]:placeholder {
 
 .buttonEditColor {
   color: #696969
+}
+
+.buttoHistoryColor {
+  color: orange;
 }

@@ -18,6 +18,7 @@
 
 <template #categoryContainer></template>
 <template #contactContainer></template>
+<template #historyViewerContainer></template>
 
 <div class="row">
   <div class="col">
@@ -36,8 +37,10 @@
             class="btn btn-light buttonRemoveColor" title="Delete category"></fa-icon>
           <fa-icon [icon]="faEdit" (click)="addEditCategory(category)"
             class="btn btn-light buttonEditColor" title="Edit category"></fa-icon>
-            <fa-icon [icon]="faUser" (click)="addContact(category.id)"
+          <fa-icon [icon]="faUser" (click)="addContact(category.id)"
             class="btn btn-light buttonCreateColor" title="Add contact"></fa-icon>
+          <fa-icon [icon]="faHistory" (click)="showHistoryViewer(category.id)"
+            class="btn btn-light buttoHistoryColor" title="History"></fa-icon>
         </div>
 
         <input type="checkbox" id="category-{{i}}" (change)="toggle(category.id, $event)"/>

@@ -60,12 +60,30 @@
             <div class="right-column">
               <span class="label" *ngIf="!isEditMode">{{ contact.birthDate | date }}</span>
               <div class="form-group" *ngIf="isEditMode ">
-                <input type="text" id="birthDate" name="birthDate" formControlName="birthDate"
+                <input type="date" id="birthDate" name="birthDate" formControlName="birthDate"
                   placeholder="yyyy-mm-dd" [(ngModel)]="contact.birthDate" ngbDatepicker
                   [ngClass]="{ 'is-invalid': submitted && f.birthDate.errors }">
 
                 <div *ngIf="submitted && f.birthDate.errors" class="invalid-feedback">
                     <div *ngIf="f.birthDate.errors.required">Birth date is required</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="title-column">
+              <span class="label-bold" *ngIf="!isNewContact">
+                Phone number
+              </span>
+            </div>
+            <div class="right-column">
+              <span class="label" *ngIf="!isEditMode">{{ contact.phoneNumber }}</span>
+              <div class="form-group" *ngIf="isEditMode ">
+                <input type="text" id="phoneNumber" name="phoneNumber" formControlName="phoneNumber"
+                  [(ngModel)]="contact.phoneNumber" placeholder="Phone number"
+                  [ngClass]="{ 'is-invalid': submitted && f.phoneNumber.errors }">
+                <div *ngIf="submitted && f.phoneNumber.errors" class="invalid-feedback">
+                    <div *ngIf="f.phoneNumber.errors.required">Phone number is required</div>
                 </div>
               </div>
             </div>

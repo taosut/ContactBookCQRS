@@ -4,6 +4,7 @@ export class Contact {
   name: string;
   email: string;
   birthDate: Date;
+  phoneNumber: string;
 
   constructor(categoryId: string) {
     this.categoryId = categoryId;
