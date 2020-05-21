@@ -12,5 +12,6 @@ namespace ContactBookCQRS.Domain.Commands
         public string Name { get; protected set; }
         public string Email { get; protected set; }
         public DateTime BirthDate { get; protected set; }
+        public string PhoneNumber { get; protected set; }
     }
 }

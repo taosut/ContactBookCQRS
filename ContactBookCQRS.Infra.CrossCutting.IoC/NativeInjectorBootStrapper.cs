@@ -54,17 +54,14 @@ namespace ContactBookCQRS.Infrastructure.CrossCutting.IoC
             services.AddScoped<IContactBooksRepository, ContactBooksRepository>();
             services.AddScoped<ICategoriesRepository, CategoriesRepository>();
             services.AddScoped<IContactBookUnitOfWork, ContactBookUnitOfWork>();
-            services.AddScoped<ContactBookContext>();
 
             // Infra Identity - Persistence
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IUserUnitOfWork, UserUnitOfWork>();
-            services.AddScoped<IdentityContext>();
 
             // Infra - Data EventSourcing
             services.AddScoped<IEventStoreRepository, EventStoreRepository>();
             services.AddScoped<IEventStore, EventStore>();
-            services.AddScoped<EventStoreContext>();
 
             // Infra - Identity
             services.AddScoped<IJwtService, JwtService>();

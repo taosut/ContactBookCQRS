@@ -32,5 +32,11 @@ namespace ContactBookCQRS.Application.ViewModels
         [DataType(DataType.Date, ErrorMessage = "Invalid format date")]
         [DisplayName("Birth Date")]
         public DateTime BirthDate { get; set; }
+
+        [Required(ErrorMessage = "The contact phone number is Required")]
+        [MinLength(5)]
+        [MaxLength(100)]
+        [DisplayName("Phone number")]
+        public string PhoneNumber { get; set; }
     }
 }

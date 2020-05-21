@@ -13,6 +13,7 @@ namespace ContactBookCQRS.Infra.Persistence.Context
         public ContactBookContext(DbContextOptions<ContactBookContext> options) 
             : base(options)
         {
+             Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

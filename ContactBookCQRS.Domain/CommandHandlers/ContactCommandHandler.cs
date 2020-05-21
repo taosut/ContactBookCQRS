@@ -48,7 +48,8 @@ namespace ContactBookCQRS.Domain.CommandHandlers
                 request.CategoryId, 
                 request.Name, 
                 request.Email, 
-                request.BirthDate);
+                request.BirthDate,
+                request.PhoneNumber);
 
             _contactUnitOfWork.ContactsRepository.CreateContact(contact);
             _contactUnitOfWork.Commit();
@@ -81,7 +82,13 @@ namespace ContactBookCQRS.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            var contact = new Contact(request.Id, request.CategoryId, request.Name, request.Email, request.BirthDate);
+            var contact = new Contact(request.Id, 
+                request.CategoryId, 
+                request.Name, 
+                request.Email, 
+                request.BirthDate,
+                request.PhoneNumber);
+
             var existingContact = _contactUnitOfWork.ContactsRepository.GetByEmail(request.Email);
 
             //Checking if the object is the same from db using this e-mail

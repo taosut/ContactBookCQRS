@@ -11,6 +11,7 @@ namespace ContactBookCQRS.Infra.Persistence.Context
         public IdentityContext(DbContextOptions<IdentityContext> options)
             : base(options)
         {
+            Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

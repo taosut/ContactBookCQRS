@@ -9,7 +9,10 @@ namespace ContactBookCQRS.Infra.Persistence.Context
 {
     public class EventStoreContext : DbContext
     {
-        public EventStoreContext(DbContextOptions<EventStoreContext> options) : base(options) { }
+        public EventStoreContext(DbContextOptions<EventStoreContext> options) : base(options) 
+        {
+            Database.Migrate();
+        }
 
         public DbSet<StoredEvent> StoredEvents { get; set; }
 
