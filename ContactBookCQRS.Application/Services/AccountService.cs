@@ -3,18 +3,15 @@ using AutoMapper;
 using System.Collections.Generic;
 using ContactBookCQRS.Application.Interfaces;
 using ContactBookCQRS.Application.ViewModels;
-using ContactBookCQRS.Domain.Commands;
-using ContactBookCQRS.Domain.Core.Bus;
-using ContactBookCQRS.Domain.Interfaces;
 using System.Linq;
 using AutoMapper.QueryableExtensions;
 using System.Threading.Tasks;
 using ContactBookCQRS.Infra.CrossCutting.Identity.Services;
 using ContactBookCQRS.Infra.CrossCutting.Identity.Models;
 using Microsoft.AspNetCore.Identity;
-using ContactBookCQRS.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using ContactBookCQRS.Domain.Persistence;
 
 namespace ContactBookCQRS.Application.Services
 {
@@ -22,7 +19,6 @@ namespace ContactBookCQRS.Application.Services
     public class AccountAppService : IAccountAppService
     {
         private readonly IContactBookAppService _contactBookAppService;
-        private readonly IMediatorHandler _bus;
         private readonly IContactBookUnitOfWork _uow;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly SignInManager<User> _signInManager;
@@ -33,14 +29,12 @@ namespace ContactBookCQRS.Application.Services
         public AccountAppService(
             IContactBookAppService contactBookAppService,
             IContactBookUnitOfWork uow, 
-            IMediatorHandler bus,
             IHttpContextAccessor httpContextAccessor,
             SignInManager<User> signInManager,
             UserManager<User> userManager,
             IJwtService jwtService)
         {
             _contactBookAppService = contactBookAppService;
-            _bus = bus;
             _uow = uow;
             _httpContextAccessor = httpContextAccessor;
             _signInManager = signInManager;
@@ -87,6 +81,7 @@ namespace ContactBookCQRS.Application.Services
             if(result.Succeeded)
             {
                 // User claim for write and delete
+                await _userManager.AddClaimAsync(user, new Claim("CanReadData", "Read"));
                 await _userManager.AddClaimAsync(user, new Claim("CanWriteData", "Write"));
                 await _userManager.AddClaimAsync(user, new Claim("CanDeleteData", "Delete"));
 

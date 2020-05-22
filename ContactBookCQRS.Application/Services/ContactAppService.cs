@@ -4,27 +4,32 @@ using System.Collections.Generic;
 using ContactBookCQRS.Application.Interfaces;
 using ContactBookCQRS.Application.ViewModels;
 using ContactBookCQRS.Domain.Commands;
-using ContactBookCQRS.Domain.Core.Bus;
-using ContactBookCQRS.Domain.Interfaces;
 using System.Linq;
 using AutoMapper.QueryableExtensions;
+using ContactBookCQRS.Domain.CommandHandlers;
+using ContactBookCQRS.Domain.Persistence;
+using ContactBookCQRS.Application.EventSourcedNormalizers;
+using ContactBookCQRS.Application.EventSourceHelpers;
 
 namespace ContactBookCQRS.Application.Services
 {
     public class ContactAppService : IContactAppService
     {
         private readonly IMapper _mapper;
-        private readonly IMediatorHandler _bus;
+        private readonly ICommandHandler _bus;
         private readonly IContactBookUnitOfWork _uow;
+        private readonly IEventStoreRepository _eventStoreRepository;
 
         public ContactAppService(
             IMapper mapper,
-            IContactBookUnitOfWork uow, 
-            IMediatorHandler bus)
+            IContactBookUnitOfWork uow,
+            ICommandHandler bus,
+            IEventStoreRepository eventStoreRepository)
         {
             _mapper = mapper;
             _bus = bus;
             _uow = uow;
+            _eventStoreRepository = eventStoreRepository;
         }
 
         public void CreateContact(ContactViewModel contactViewModel)
@@ -50,6 +55,14 @@ namespace ContactBookCQRS.Application.Services
         {
             return _uow.ContactsRepository.GetContacts(userId, categoryId)
                 .ProjectTo<ContactViewModel>(_mapper.ConfigurationProvider);
+        }
+
+        public IList<ContactHistoryData> GetEventHistory(Guid id)
+        {
+            var storedEvents = _eventStoreRepository.GetByAggregateId(id);
+            ContactEventNormatizer normatizer = new ContactEventNormatizer();
+            IList<ContactHistoryData> contactHistoryData = normatizer.ToHistoryData(storedEvents);
+            return contactHistoryData;
         }
     }
 }

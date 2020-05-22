@@ -4,7 +4,6 @@ using System.Text;
 using AutoMapper;
 using ContactBookCQRS.Application.ViewModels;
 using ContactBookCQRS.Domain.Commands;
-using ContactBookCQRS.Domain.Models;
 
 namespace ContactBookCQRS.Application.AutoMapper
 {

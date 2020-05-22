@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
 using ContactBookCQRS.Application.ViewModels;
-using ContactBookCQRS.Domain.Models;
+using ContactBookCQRS.Domain.Aggregates;
 
 namespace ContactBookCQRS.Application.AutoMapper
 {

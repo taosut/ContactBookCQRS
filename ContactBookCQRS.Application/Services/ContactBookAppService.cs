@@ -1,28 +1,26 @@
 ﻿using System;
 using AutoMapper;
-using System.Collections.Generic;
 using ContactBookCQRS.Application.Interfaces;
-using ContactBookCQRS.Application.ViewModels;
 using ContactBookCQRS.Domain.Commands;
-using ContactBookCQRS.Domain.Core.Bus;
-using ContactBookCQRS.Domain.Interfaces;
 using System.Linq;
 using AutoMapper.QueryableExtensions;
-using ContactBookCQRS.Domain.Models;
 using System.Threading.Tasks;
+using ContactBookCQRS.Domain.CommandHandlers;
+using ContactBookCQRS.Domain.Aggregates;
+using ContactBookCQRS.Domain.Persistence;
 
 namespace ContactBookCQRS.Application.Services
 {
     public class ContactBookAppService : IContactBookAppService
     {
         private readonly IMapper _mapper;
-        private readonly IMediatorHandler _bus;
+        private readonly ICommandHandler _bus;
         private readonly IContactBookUnitOfWork _uow;
 
         public ContactBookAppService(
             IMapper mapper,
-            IContactBookUnitOfWork uow, 
-            IMediatorHandler bus)
+            IContactBookUnitOfWork uow,
+            ICommandHandler bus)
         {
             _mapper = mapper;
             _bus = bus;

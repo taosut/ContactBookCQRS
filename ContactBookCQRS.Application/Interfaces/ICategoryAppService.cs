@@ -1,4 +1,5 @@
-﻿using ContactBookCQRS.Application.ViewModels;
+﻿using ContactBookCQRS.Application.EventSourcedNormalizers;
+using ContactBookCQRS.Application.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace ContactBookCQRS.Application.Interfaces
         IEnumerable<CategoryViewModel> GetCategories(Guid userId);
         void UpdateCategory(Guid categoryId, CategoryViewModel categoryViewModel);
         void DeleteCategory(Guid userId, Guid categoryId);
+        IList<CategoryHistoryData> GetEventHistory(Guid id);
     }
 }
