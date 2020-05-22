@@ -16,9 +16,11 @@
   </div>
 </div>
 
-<template #categoryContainer></template>
-<template #contactContainer></template>
-<template #historyViewerContainer></template>
+<div [ngClass]="{ 'backgrop-container': modalOpened }">
+  <template #categoryContainer></template>
+  <template #contactContainer></template>
+  <template #historyViewerContainer></template>
+</div>
 
 <div class="row">
   <div class="col">

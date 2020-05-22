@@ -66,7 +66,8 @@ namespace ContactBookCQRS.WebApp.Configurations
             if (services == null) throw new ArgumentNullException(nameof(services));
 
             services.AddAuthorization(options =>
-            {
+            {                
+                options.AddPolicy("CanReadData", policy => policy.Requirements.Add(new ClaimRequirement("CanReadData", "Read")));
                 options.AddPolicy("CanWriteData", policy => policy.Requirements.Add(new ClaimRequirement("CanWriteData", "Write")));
                 options.AddPolicy("CanDeleteData", policy => policy.Requirements.Add(new ClaimRequirement("CanDeleteData", "Delete")));
             });

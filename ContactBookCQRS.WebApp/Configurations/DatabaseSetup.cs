@@ -24,7 +24,7 @@ namespace ContactBookCQRS.WebApp.Configurations
             services.AddDbContextPool<ContactBookContext>(options =>
                 options.UseSqlServer(connString));
 
-            services.AddDbContextPool<EventStoreContext>(options =>
+            services.AddDbContextPool<StoredEventContext>(options =>
                 options.UseSqlServer(connString));
         }
     }

@@ -1,7 +1,7 @@
 ﻿using ContactBookCQRS.Application.Interfaces;
 using ContactBookCQRS.Application.ViewModels;
-using ContactBookCQRS.Domain.Core.Bus;
-using ContactBookCQRS.Domain.Core.Notifications;
+using ContactBookCQRS.Domain.Events;
+using ContactBookCQRS.Domain.Notifications;
 using ContactBookCQRS.Infra.CrossCutting.Identity.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -22,15 +22,16 @@ namespace ContactBookCQRS.WebApp.Controllers
         public ContactController(
             IUserProvider userProvider,
             IContactAppService contactAppService,
-            INotificationHandler<DomainNotification> notifications,
-            IMediatorHandler mediator) : base(notifications, mediator, userProvider)
+            INotificationHandler<DomainNotification> notificationHandler,
+            IEventHandler eventHandler) : base(notificationHandler, eventHandler, userProvider)
         {
             _userProvider = userProvider ?? throw new ArgumentNullException(nameof(userProvider));
             _contactAppService = contactAppService;
         }
 
+        [HttpDelete]
         [Authorize(Policy = "CanDeleteData")]
-        [HttpDelete, Route("{contactId:guid}")]
+        [Route("{contactId:guid}")]
         public IActionResult Delete([FromRoute]Guid contactId)
         {
             _contactAppService.DeleteContact(UserId, contactId);
@@ -51,8 +52,9 @@ namespace ContactBookCQRS.WebApp.Controllers
             return Response(contactViewModel);
         }
 
+        [HttpPut]
         [Authorize(Policy = "CanWriteData")]
-        [HttpPut, Route("{contactId:guid}")]
+        [Route("{contactId:guid}")]
         public IActionResult Put([FromRoute]Guid contactId, [FromBody]ContactViewModel contactViewModel)
         {
             if (!ModelState.IsValid)
@@ -68,6 +70,15 @@ namespace ContactBookCQRS.WebApp.Controllers
 
             _contactAppService.UpdateContact(contactId, contactViewModel);
             return Response(contactViewModel);
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "CanReadData")]
+        [Route("history/{contactId:guid}")]
+        public IActionResult GetEventHistory(Guid contactId)
+        {
+            var customerHistoryData = _contactAppService.GetEventHistory(contactId);
+            return Response(customerHistoryData);
         }
     }
 }

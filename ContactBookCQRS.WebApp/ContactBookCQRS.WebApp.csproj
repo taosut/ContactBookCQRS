@@ -70,7 +70,6 @@
     <ProjectReference Include="..\ContactBookCQRS.Application\ContactBookCQRS.Application.csproj" />
     <ProjectReference Include="..\ContactBookCQRS.Infra.CrossCutting.Bus\ContactBookCQRS.Infra.CrossCutting.Bus.csproj" />
     <ProjectReference Include="..\ContactBookCQRS.Infra.CrossCutting.Identity\ContactBookCQRS.Infra.CrossCutting.Identity.csproj" />
-    <ProjectReference Include="..\ContactBookCQRS.Infra.CrossCutting.IoC\ContactBookCQRS.Infra.CrossCutting.IoC.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

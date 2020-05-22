@@ -1,23 +1,11 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ContactBookCQRS.Application.Interfaces;
-using ContactBookCQRS.Application.Services;
-using ContactBookCQRS.Application.ViewModels;
-using ContactBookCQRS.Domain.Core.Bus;
-using ContactBookCQRS.Domain.Core.Notifications;
-using ContactBookCQRS.Infra.CrossCutting.Identity;
+using ContactBookCQRS.Domain.Events;
+using ContactBookCQRS.Domain.Notifications;
 using ContactBookCQRS.Infra.CrossCutting.Identity.Helpers;
 using ContactBookCQRS.Infra.CrossCutting.Identity.Models;
-using ContactBookCQRS.WebApp.Configurations;
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using ontactBookCQRS.WebApp.Controllers.Base;
 
 namespace ContactBookCQRS.WebApp.Controllers
@@ -31,8 +19,8 @@ namespace ContactBookCQRS.WebApp.Controllers
         public AccountController(
             IUserProvider userProvider,
             IAccountAppService accountAppService,
-            INotificationHandler<DomainNotification> notifications, 
-            IMediatorHandler mediator) : base(notifications, mediator, userProvider)
+            INotificationHandler<DomainNotification> notificationHandler,
+            IEventHandler mediator) : base(notificationHandler, mediator, userProvider)
         {
             _accountAppService = accountAppService;
         }

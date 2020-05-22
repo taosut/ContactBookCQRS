@@ -2,22 +2,19 @@
 using ContactBookCQRS.Application.Services;
 using ContactBookCQRS.Domain.CommandHandlers;
 using ContactBookCQRS.Domain.Commands;
-using ContactBookCQRS.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using ContactBookCQRS.Infra.Persistence.UnitOfWork;
-using ContactBookCQRS.Infra.Persistence.Context;
-using ContactBookCQRS.Domain.Core.Bus;
 using ContactBookCQRS.Infra.CrossCutting.Bus;
 using ContactBookCQRS.Infra.Persistence.Repository;
-using ContactBookCQRS.Domain.Core.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using ContactBookCQRS.Infra.CrossCutting.Identity.Authorization;
 using ContactBookCQRS.Infra.CrossCutting.Identity.Models;
-using ContactBookCQRS.Domain.Core.Events;
-using ContactBookCQRS.Infra.Persistence.Repository.EventSourcing;
-using ContactBookCQRS.Infra.Persistence.EventSourcing.Equinox.Infra.Data.EventSourcing;
 using ContactBookCQRS.Infra.CrossCutting.Identity.Services;
+using ContactBookCQRS.Domain.Notifications;
+using ContactBookCQRS.Domain.Identity;
+using ContactBookCQRS.Domain.Events;
+using ContactBookCQRS.Domain.Persistence;
 
 namespace ContactBookCQRS.Infrastructure.CrossCutting.IoC
 {
@@ -29,7 +26,8 @@ namespace ContactBookCQRS.Infrastructure.CrossCutting.IoC
             services.AddSingleton<IAuthorizationHandler, ClaimsRequirementHandler>();
 
             // Domain Bus (Mediator)
-            services.AddScoped<IMediatorHandler, InMemoryBus>();
+            services.AddScoped<ICommandHandler, InMemoryBus>();
+            services.AddScoped<IEventHandler, InMemoryBus>();
 
             // Application Services
             services.AddScoped<IContactAppService, ContactAppService>();
@@ -61,7 +59,7 @@ namespace ContactBookCQRS.Infrastructure.CrossCutting.IoC
 
             // Infra - Data EventSourcing
             services.AddScoped<IEventStoreRepository, EventStoreRepository>();
-            services.AddScoped<IEventStore, EventStore>();
+            services.AddScoped<IEventStoreService, EventStoreService>();
 
             // Infra - Identity
             services.AddScoped<IJwtService, JwtService>();

@@ -1,7 +1,7 @@
 ﻿using ContactBookCQRS.Application.Interfaces;
 using ContactBookCQRS.Application.ViewModels;
-using ContactBookCQRS.Domain.Core.Bus;
-using ContactBookCQRS.Domain.Core.Notifications;
+using ContactBookCQRS.Domain.Events;
+using ContactBookCQRS.Domain.Notifications;
 using ContactBookCQRS.Infra.CrossCutting.Identity.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -24,23 +24,24 @@ namespace ContactBookCQRS.WebApp.Controllers
             IUserProvider userProvider,
             ICategoryAppService categoryAppService,
             IContactAppService contactAppService,
-            INotificationHandler<DomainNotification> notifications,
-            IMediatorHandler mediator) : base(notifications, mediator, userProvider)
+            INotificationHandler<DomainNotification> notificationHandler,
+            IEventHandler eventHandler) : base(notificationHandler, eventHandler, userProvider)
         {
             _userProvider = userProvider ?? throw new ArgumentNullException(nameof(userProvider));
             _categoryAppService = categoryAppService;
             _contactAppService = contactAppService;
         }
 
-        [Authorize]
         [HttpGet]
+        [Authorize(Policy = "CanReadData")]
         public IActionResult Get()
         {
             return Response(_categoryAppService.GetCategories(UserId));
         }
 
-        [Authorize]
-        [HttpGet, Route("{categoryId:guid}/contacts")]
+        [HttpGet]
+        [Authorize(Policy = "CanReadData")]
+        [Route("{categoryId:guid}/contacts")]
         public IActionResult GetContacts([FromRoute]Guid categoryId)
         {
             return Response(_contactAppService.GetContacts(UserId, categoryId));
@@ -61,16 +62,18 @@ namespace ContactBookCQRS.WebApp.Controllers
             return Response(categoryViewModel);
         }
 
+        [HttpDelete]
         [Authorize(Policy = "CanDeleteData")]
-        [HttpDelete, Route("{categoryId:guid}")]
+        [Route("{categoryId:guid}")]
         public IActionResult Delete([FromRoute]Guid categoryId)
         {
             _categoryAppService.DeleteCategory(UserId, categoryId);
             return Ok();
         }
 
+        [HttpPut]
         [Authorize(Policy = "CanWriteData")]
-        [HttpPut, Route("{categoryId:guid}")]
+        [Route("{categoryId:guid}")]
         public IActionResult Put([FromRoute]Guid categoryId, [FromBody]CategoryViewModel categoryViewModel)
         {
             if (!ModelState.IsValid)
@@ -86,6 +89,15 @@ namespace ContactBookCQRS.WebApp.Controllers
 
             _categoryAppService.UpdateCategory(categoryId, categoryViewModel);
             return Ok();
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "CanReadData")]
+        [Route("history/{categoryId:guid}")]
+        public IActionResult GetEventHistory(Guid categoryId)
+        {
+            var customerHistoryData = _categoryAppService.GetEventHistory(categoryId);
+            return Response(customerHistoryData);
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using ContactBookCQRS.Domain.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
+using ContactBookCQRS.Domain.Identity;
 
 namespace ContactBookCQRS.Infra.CrossCutting.Identity.Models
 {

@@ -7,6 +7,7 @@ import { Contact } from 'app/core/models/Contact';
 import { ContactComponent } from '../contact/contact.component';
 import { ConfirmationDialogService } from 'app/core/services/confirmation-dialog.service';
 import { HistoryViewerComponent } from '../history-viewer/history-viewer.component';
+import { CategoryHistoryData } from 'app/core/models/CategoryHistoryData';
 
 @Component({
   selector: 'app-category-list',
@@ -25,6 +26,7 @@ export class CategoryListComponent implements OnInit {
   contactComponentRef: any;
   historyViewerComponentRef: any;
   createEditCategory = false;
+  modalOpened = false;
 
   faPlusCircle = faPlusCircle;
   faMinusCircle = faMinusCircle;
@@ -43,6 +45,7 @@ export class CategoryListComponent implements OnInit {
   }
 
   addEditCategory(category?: Category) {
+    this.modalOpened = true;
     this.categoryContainer.clear();
     const factory = this.resolver.resolveComponentFactory(CategoryComponent);
     this.categoryComponentRef = this.categoryContainer.createComponent(factory);
@@ -54,12 +57,12 @@ export class CategoryListComponent implements OnInit {
     });
 
     this.categoryComponentRef.instance.destroyComponent.subscribe(event => {
-      console.log(event);
       this.destroyCategoryAndReload();
     });
   }
 
   addContact(categoryId: string) {
+    this.modalOpened = true;
     this.contactContainer.clear();
     const factory = this.resolver.resolveComponentFactory(ContactComponent);
     this.contactComponentRef = this.contactContainer.createComponent(factory);
@@ -70,17 +73,27 @@ export class CategoryListComponent implements OnInit {
     this.contactComponentRef.instance.reloadContacts.subscribe(event => {
       this.getContacts(categoryId);
       this.contactComponentRef.destroy();
+      this.modalOpened = false;
     });
 
     this.contactComponentRef.instance.destroyComponent.subscribe(event => {
       this.contactComponentRef.destroy();
+      this.modalOpened = false;
     });
   }
 
   showHistoryViewer(categoryId: string) {
+    this.modalOpened = true;
     this.historyViewerContainer.clear();
     const factory = this.resolver.resolveComponentFactory(HistoryViewerComponent);
     this.historyViewerComponentRef = this.historyViewerContainer.createComponent(factory);
+    this.historyViewerComponentRef.instance.aggregateId = categoryId;
+    this.historyViewerComponentRef.instance.aggregateType = "CategoryHistoryData";
+
+    this.historyViewerComponentRef.instance.destroyComponent.subscribe(event => {
+      this.historyViewerComponentRef.destroy();
+      this.modalOpened = false;
+    });
   }
 
   toggle(categoryId: string, e){
@@ -91,6 +104,7 @@ export class CategoryListComponent implements OnInit {
 
   destroyCategoryAndReload() {
     this.categoryComponentRef.destroy();
+    this.modalOpened = false;
     this.loadCategoryList();
   }
 

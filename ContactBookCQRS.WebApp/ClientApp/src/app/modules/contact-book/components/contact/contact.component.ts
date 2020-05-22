@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { Contact } from 'app/core/models/Contact';
-import { faEdit, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faMinusCircle, faHistory } from '@fortawesome/free-solid-svg-icons';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ContactService } from '../../contact.service';
 import { ConfirmationDialogService } from 'app/core/services/confirmation-dialog.service';
+import { HistoryViewerComponent } from '../history-viewer/history-viewer.component';
 
 @Component({
   selector: 'app-contact',
@@ -14,18 +15,23 @@ export class ContactComponent implements OnInit {
 
   @Output("reloadContacts") reloadContacts: EventEmitter<any> = new EventEmitter();
   @Output("destroyComponent") destroyComponent: EventEmitter<any> = new EventEmitter();
+  @ViewChild("historyViewerContainer", { read: ViewContainerRef }) historyViewerContainer;
+
   @Input() contact: Contact;
 
   isEditMode: boolean;
   isNewContact: boolean;
   contactForm: FormGroup;
+  historyViewerComponentRef: any;
   loading = false;
   submitted = false;
   faMinusCircle = faMinusCircle;
   faEdit = faEdit;
+  faHistory = faHistory;
 
   constructor(private formBuilder: FormBuilder,
               private contactService: ContactService,
+              private resolver: ComponentFactoryResolver,
               private confirmationDialogService: ConfirmationDialogService) { }
 
   ngOnInit() {
@@ -34,6 +40,18 @@ export class ContactComponent implements OnInit {
       email: ['', Validators.required],
       birthDate: ['', Validators.required],
       phoneNumber: ['', Validators.required]
+    });
+  }
+
+  showHistoryViewer(contactId: string) {
+    this.historyViewerContainer.clear();
+    const factory = this.resolver.resolveComponentFactory(HistoryViewerComponent);
+    this.historyViewerComponentRef = this.historyViewerContainer.createComponent(factory);
+    this.historyViewerComponentRef.instance.aggregateId = contactId;
+    this.historyViewerComponentRef.instance.aggregateType = "ContactHistoryData";
+
+    this.historyViewerComponentRef.instance.destroyComponent.subscribe(event => {
+      this.historyViewerComponentRef.destroy();
     });
   }
 

@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ContactBookCQRS.Application\ContactBookCQRS.Application.csproj" />
     <ProjectReference Include="..\ContactBookCQRS.Domain\ContactBookCQRS.Domain.csproj" />
+    <ProjectReference Include="..\ContactBookCQRS.Infra.CrossCutting.Bus\ContactBookCQRS.Infra.CrossCutting.Bus.csproj" />
     <ProjectReference Include="..\ContactBookCQRS.Infra.CrossCutting.Identity\ContactBookCQRS.Infra.CrossCutting.Identity.csproj" />
     <ProjectReference Include="..\ContactBookCQRS.Infra.Persistence\ContactBookCQRS.Infra.Persistence.csproj" />
   </ItemGroup>

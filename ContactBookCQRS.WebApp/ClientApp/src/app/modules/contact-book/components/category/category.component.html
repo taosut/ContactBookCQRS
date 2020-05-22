@@ -1,20 +1,18 @@
-<div class="backgrop-container">
-  <div class="wrapper fadeInDown form-position">
-    <div class="formContent">
-      <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <input type="text" id="name" name="name" placeholder="Name"
-            [(ngModel)]="category.name" formControlName="name"
-            [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
-          <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-              <div *ngIf="f.name.errors.required">Name is required</div>
-          </div>
+<div class="wrapper fadeInDown form-position">
+  <div class="formContent">
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <input type="text" id="name" name="name" placeholder="Name"
+          [(ngModel)]="category.name" formControlName="name" maxlength="100"
+          [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+        <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+            <div *ngIf="f.name.errors.required">Name is required</div>
         </div>
-        <div class="formFooter">
-          <input [disabled]="loading" type="button" (click)="cancel()" value="Cancel">
-          <input [disabled]="loading" type="submit" value="Save">
-        </div>
-      </form>
-    </div>
+      </div>
+      <div class="formFooter">
+        <input [disabled]="loading" type="button" (click)="cancel()" value="Cancel">
+        <input [disabled]="loading" type="submit" value="Save">
+      </div>
+    </form>
   </div>
 </div>

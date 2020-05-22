@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using ContactBookCQRS.Domain.Core.Bus;
-using ContactBookCQRS.Domain.Core.Notifications;
+using ContactBookCQRS.Domain.Events;
+using ContactBookCQRS.Domain.Notifications;
 using ContactBookCQRS.Infra.CrossCutting.Identity.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -16,8 +14,8 @@ namespace ontactBookCQRS.WebApp.Controllers.Base
     public abstract class BaseController : ControllerBase
     {
         private readonly IUserProvider _userProvider;
-        private readonly DomainNotificationHandler _notifications;
-        private readonly IMediatorHandler _mediator;
+        private readonly IEventHandler _eventHandler;
+        private readonly DomainNotificationHandler _notificationHandler;
         protected Guid UserId
         {
             get {
@@ -27,20 +25,20 @@ namespace ontactBookCQRS.WebApp.Controllers.Base
 
         protected BaseController(
             INotificationHandler<DomainNotification> notifications,
-            IMediatorHandler mediator,
+            IEventHandler eventHandler,
             IUserProvider userProvider
             )
         {
-            _notifications = (DomainNotificationHandler)notifications;
-            _mediator = mediator;
+            _eventHandler = eventHandler;
             _userProvider = userProvider;
+            _notificationHandler = (DomainNotificationHandler)notifications;
         }
 
-        protected IEnumerable<DomainNotification> Notifications => _notifications.GetNotifications();
+        protected IEnumerable<DomainNotification> Notifications => _notificationHandler.GetNotifications();
 
         protected bool IsValidOperation()
         {
-            return (!_notifications.HasNotifications());
+            return (!_notificationHandler.HasNotifications());
         }
 
         protected new IActionResult Response(object result = null)
@@ -57,7 +55,7 @@ namespace ontactBookCQRS.WebApp.Controllers.Base
             return BadRequest(new
             {
                 success = false,
-                errors = _notifications.GetNotifications().Select(n => n.Value)
+                errors = _notificationHandler.GetNotifications().Select(n => n.Value)
             });
         }
 
@@ -72,7 +70,7 @@ namespace ontactBookCQRS.WebApp.Controllers.Base
 
         protected void NotifyError(string code, string message)
         {
-            _mediator.RaiseEvent(new DomainNotification(code, message));
+            _eventHandler.RaiseEvent(new DomainNotification(code, message));
         }
 
         protected void AddIdentityErrors(IdentityResult result)
