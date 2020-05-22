@@ -6,13 +6,9 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="8.6.2" />
+    <PackageReference Include="MediatR" Version="8.0.1" />
     <PackageReference Include="System.ComponentModel" Version="4.3.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ContactBookCQRS.Domain.Core\ContactBookCQRS.Domain.Core.csproj" />
-    <ProjectReference Include="..\ContactBookCQRS.Infra.CrossCutting.Bus\ContactBookCQRS.Infra.CrossCutting.Bus.csproj" />
   </ItemGroup>
 
 </Project>

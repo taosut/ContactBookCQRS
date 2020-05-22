@@ -1,9 +1,9 @@
-﻿using ContactBookCQRS.Domain.Core.Interfaces;
+﻿using ContactBookCQRS.Domain.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ContactBookCQRS.Domain.Interfaces
+namespace ContactBookCQRS.Domain.Persistence
 {
     public interface IUserUnitOfWork : IUnitOfWork
     {

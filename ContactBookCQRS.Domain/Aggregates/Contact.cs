@@ -1,7 +1,6 @@
-﻿using ContactBookCQRS.Domain.Core.Models;
-using System;
+﻿using System;
 
-namespace ContactBookCQRS.Domain.Models
+namespace ContactBookCQRS.Domain.Aggregates
 {
     public class Contact : Entity
     {

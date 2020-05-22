@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using ContactBookCQRS.Domain.Aggregates;
 using ContactBookCQRS.Domain.Commands;
-using ContactBookCQRS.Domain.Core.Bus;
-using ContactBookCQRS.Domain.Core.Notifications;
+using ContactBookCQRS.Domain.DomainEvents;
 using ContactBookCQRS.Domain.Events;
-using ContactBookCQRS.Domain.Interfaces;
-using ContactBookCQRS.Domain.Models;
+using ContactBookCQRS.Domain.Notifications;
+using ContactBookCQRS.Domain.Persistence;
 using MediatR;
 
 namespace ContactBookCQRS.Domain.CommandHandlers
@@ -17,15 +17,15 @@ namespace ContactBookCQRS.Domain.CommandHandlers
         IRequestHandler<UpdateContactCommand, bool>        
     {
         private readonly IContactBookUnitOfWork _contactUnitOfWork;
-        private readonly IMediatorHandler _bus;
+        private readonly IEventHandler _eventHandler;
 
         public ContactCommandHandler(
             IContactBookUnitOfWork uow,
-            IMediatorHandler bus,
+            IEventHandler eventHandler,
             INotificationHandler<DomainNotification> notifications)
-            : base(uow, bus, notifications)
+            : base(uow, eventHandler, notifications)
         {
-            _bus = bus;
+            _eventHandler = eventHandler;
             _contactUnitOfWork = uow;
         }
 
@@ -39,7 +39,7 @@ namespace ContactBookCQRS.Domain.CommandHandlers
             // Checking if contact e-mail is already taken
             if (null != _contactUnitOfWork.ContactsRepository.GetByEmail(request.Email))
             {
-                _bus.RaiseEvent(new DomainNotification(request.MessageType, "The contact e-mail has already been taken."));
+                _eventHandler.RaiseEvent(new DomainNotification(request.MessageType, "The contact e-mail has already been taken."));
                 return Task.FromResult(false);
             }
 
@@ -52,7 +52,17 @@ namespace ContactBookCQRS.Domain.CommandHandlers
                 request.PhoneNumber);
 
             _contactUnitOfWork.ContactsRepository.CreateContact(contact);
-            _contactUnitOfWork.Commit();
+            
+            //Storing the creation event
+            if (_contactUnitOfWork.Commit())
+            {
+                _eventHandler.RaiseEvent(new ContactCreatedEvent(contact.Id, 
+                    contact.CategoryId, 
+                    contact.Name, 
+                    contact.Email, 
+                    contact.BirthDate, 
+                    contact.PhoneNumber));
+            }
 
             return Task.FromResult(true);
         }
@@ -69,7 +79,7 @@ namespace ContactBookCQRS.Domain.CommandHandlers
             //Storing the deletion event
             if (_contactUnitOfWork.Commit())
             {
-                _bus.RaiseEvent(new ContactDeleteEvent(request.Id));
+                _eventHandler.RaiseEvent(new ContactDeletedEvent(request.Id));
             }
 
             return Task.FromResult(true);
@@ -97,13 +107,22 @@ namespace ContactBookCQRS.Domain.CommandHandlers
             {                
                 if (!existingContact.Equals(contact))
                 {
-                    _bus.RaiseEvent(new DomainNotification(request.MessageType, "The contact e-mail has already been taken."));
+                    _eventHandler.RaiseEvent(new DomainNotification(request.MessageType, "The contact e-mail has already been taken."));
                     return Task.FromResult(false);
                 }
             }
 
             _contactUnitOfWork.ContactsRepository.UpdateContact(contact);
-            _contactUnitOfWork.Commit();
+
+            //Storing the creation event
+            if (_contactUnitOfWork.Commit())
+            {
+                _eventHandler.RaiseEvent(new ContactUpdatedEvent(contact.Id,
+                    contact.Name,
+                    contact.Email,
+                    contact.BirthDate,
+                    contact.PhoneNumber));
+            }
 
             return Task.FromResult(true);
         }

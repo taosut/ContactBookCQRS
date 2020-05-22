@@ -1,5 +1,4 @@
-﻿using ContactBookCQRS.Domain.Core.Commands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 

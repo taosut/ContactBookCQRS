@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using ContactBookCQRS.Domain.Aggregates;
 using ContactBookCQRS.Domain.Commands;
-using ContactBookCQRS.Domain.Core.Bus;
-using ContactBookCQRS.Domain.Core.Notifications;
+using ContactBookCQRS.Domain.DomainEvents;
 using ContactBookCQRS.Domain.Events;
-using ContactBookCQRS.Domain.Interfaces;
-using ContactBookCQRS.Domain.Models;
+using ContactBookCQRS.Domain.Notifications;
+using ContactBookCQRS.Domain.Persistence;
 using MediatR;
 
 namespace ContactBookCQRS.Domain.CommandHandlers
@@ -17,15 +17,15 @@ namespace ContactBookCQRS.Domain.CommandHandlers
         IRequestHandler<UpdateCategoryCommand, bool>
     {
         private readonly IContactBookUnitOfWork _contactUnitOfWork;
-        private readonly IMediatorHandler _bus;
+        private readonly IEventHandler _eventHandler;
 
         public CategoryCommandHandler(
             IContactBookUnitOfWork uow,
-            IMediatorHandler bus,
+            IEventHandler eventHandler,
             INotificationHandler<DomainNotification> notifications)
-            : base(uow, bus, notifications)
+            : base(uow, eventHandler, notifications)
         {
-            _bus = bus;
+            _eventHandler = eventHandler;
             _contactUnitOfWork = uow;
         }
 
@@ -42,7 +42,7 @@ namespace ContactBookCQRS.Domain.CommandHandlers
             //Storing the creation event
             if (_contactUnitOfWork.Commit())
             {
-                _bus.RaiseEvent(new CategoryCreatedEvent(category.Id, category.ContactBookId, category.Name));
+                _eventHandler.RaiseEvent(new CategoryCreatedEvent(category.Id, category.Name));
             }
 
             return Task.FromResult(true);
@@ -60,7 +60,7 @@ namespace ContactBookCQRS.Domain.CommandHandlers
             //Storing the deletion event
             if (_contactUnitOfWork.Commit())
             {
-                _bus.RaiseEvent(new ContactDeleteEvent(request.Id));
+                _eventHandler.RaiseEvent(new CategoryDeletedEvent(request.Id));
             }
 
             return Task.FromResult(true);
@@ -79,7 +79,7 @@ namespace ContactBookCQRS.Domain.CommandHandlers
             //Storing the update event
             if (_contactUnitOfWork.Commit())
             {
-                _bus.RaiseEvent(new CategoryUpdatedEvent(category.Id, category.ContactBookId, category.Name));
+                _eventHandler.RaiseEvent(new CategoryUpdatedEvent(category.Id, category.ContactBookId, category.Name));
             }
 
             return Task.FromResult(true);

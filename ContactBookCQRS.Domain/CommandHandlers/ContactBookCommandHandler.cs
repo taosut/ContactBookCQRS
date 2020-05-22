@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using ContactBookCQRS.Domain.Aggregates;
 using ContactBookCQRS.Domain.Commands;
-using ContactBookCQRS.Domain.Core.Bus;
-using ContactBookCQRS.Domain.Core.Notifications;
-using ContactBookCQRS.Domain.Interfaces;
-using ContactBookCQRS.Domain.Models;
+using ContactBookCQRS.Domain.Events;
+using ContactBookCQRS.Domain.Identity;
+using ContactBookCQRS.Domain.Notifications;
+using ContactBookCQRS.Domain.Persistence;
 using MediatR;
 
 namespace ContactBookCQRS.Domain.CommandHandlers
@@ -15,16 +16,16 @@ namespace ContactBookCQRS.Domain.CommandHandlers
     {
         private readonly IContactBookUnitOfWork _contactUnitOfWork;
         private readonly IUserUnitOfWork _userUnitOfWork;
-        private readonly IMediatorHandler _bus;
+        private readonly IEventHandler _eventHandler;
 
         public ContactBookCommandHandler(
             IContactBookUnitOfWork contactUoW,
             IUserUnitOfWork userUnitOfWork,
-            IMediatorHandler bus,
+            IEventHandler eventHandler,
             INotificationHandler<DomainNotification> notifications)
-            : base(contactUoW, bus, notifications)
+            : base(contactUoW, eventHandler, notifications)
         {
-            _bus = bus;
+            _eventHandler = eventHandler;
             _contactUnitOfWork = contactUoW;
             _userUnitOfWork = userUnitOfWork;
         }

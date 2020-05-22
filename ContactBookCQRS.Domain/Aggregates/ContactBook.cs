@@ -1,11 +1,8 @@
-﻿using ContactBookCQRS.Domain.Core.Interfaces;
-using ContactBookCQRS.Domain.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace ContactBookCQRS.Domain.Models
+namespace ContactBookCQRS.Domain.Aggregates
 {
     public class ContactBook : Entity, IAggregateRoot
     {

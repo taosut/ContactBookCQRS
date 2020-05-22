@@ -18,14 +18,14 @@ namespace ContactBookCQRS.Domain.Validations
         {
             RuleFor(c => c.Name)
                 .NotEmpty().WithMessage("Please ensure you have entered the Name")
-                .Length(2, 150).WithMessage("The Name must have between 2 and 150 characters");
+                .Length(5, 100).WithMessage("The Name must have between 5 and 100 characters");
         }
 
         protected void ValidateContactBookId()
         {
             RuleFor(c => c.ContactBookId)
                 .NotEqual(Guid.Empty)
-                .WithMessage("The Contact Book Id is required");
+                .WithMessage("The ContactBook Id is required");
         }
     }
 }
