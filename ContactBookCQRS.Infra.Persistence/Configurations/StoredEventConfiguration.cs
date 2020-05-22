@@ -1,4 +1,4 @@
-﻿using ContactBookCQRS.Domain.Core.Events;
+﻿using ContactBookCQRS.Domain.Events;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

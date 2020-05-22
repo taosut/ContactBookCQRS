@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ContactBookCQRS.Infra.Persistence.Migrations
 {
     [DbContext(typeof(ContactBookContext))]
-    [Migration("20200426022812_InitialCreate")]
+    [Migration("20200522004055_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace ContactBookCQRS.Infra.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ContactBookCQRS.Domain.Models.Category", b =>
+            modelBuilder.Entity("ContactBookCQRS.Domain.Aggregates.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,7 +43,7 @@ namespace ContactBookCQRS.Infra.Persistence.Migrations
                     b.ToTable("Categories","dbo");
                 });
 
-            modelBuilder.Entity("ContactBookCQRS.Domain.Models.Contact", b =>
+            modelBuilder.Entity("ContactBookCQRS.Domain.Aggregates.Contact", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -66,6 +66,9 @@ namespace ContactBookCQRS.Infra.Persistence.Migrations
                         .HasColumnType("varchar(100)")
                         .HasMaxLength(100);
 
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -73,7 +76,7 @@ namespace ContactBookCQRS.Infra.Persistence.Migrations
                     b.ToTable("Contacts","dbo");
                 });
 
-            modelBuilder.Entity("ContactBookCQRS.Domain.Models.ContactBook", b =>
+            modelBuilder.Entity("ContactBookCQRS.Domain.Aggregates.ContactBook", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -88,18 +91,18 @@ namespace ContactBookCQRS.Infra.Persistence.Migrations
                     b.ToTable("ContactBooks","dbo");
                 });
 
-            modelBuilder.Entity("ContactBookCQRS.Domain.Models.Category", b =>
+            modelBuilder.Entity("ContactBookCQRS.Domain.Aggregates.Category", b =>
                 {
-                    b.HasOne("ContactBookCQRS.Domain.Models.ContactBook", null)
+                    b.HasOne("ContactBookCQRS.Domain.Aggregates.ContactBook", null)
                         .WithMany("Categories")
                         .HasForeignKey("ContactBookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ContactBookCQRS.Domain.Models.Contact", b =>
+            modelBuilder.Entity("ContactBookCQRS.Domain.Aggregates.Contact", b =>
                 {
-                    b.HasOne("ContactBookCQRS.Domain.Models.Category", null)
+                    b.HasOne("ContactBookCQRS.Domain.Aggregates.Category", null)
                         .WithMany("Contacts")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)

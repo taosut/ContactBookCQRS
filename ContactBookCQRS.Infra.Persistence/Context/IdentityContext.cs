@@ -1,5 +1,4 @@
-﻿using ContactBookCQRS.Domain.Models;
-using ContactBookCQRS.Infra.CrossCutting.Identity.Models;
+﻿using ContactBookCQRS.Infra.CrossCutting.Identity.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -1,4 +1,4 @@
-﻿using ContactBookCQRS.Domain.Models;
+﻿using ContactBookCQRS.Domain.Aggregates;
 using ContactBookCQRS.Infra.CrossCutting.Identity.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

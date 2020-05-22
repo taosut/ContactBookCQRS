@@ -1,7 +1,6 @@
-﻿using ContactBookCQRS.Domain.Interfaces;
-using ContactBookCQRS.Domain.Models;
+﻿using ContactBookCQRS.Domain.Aggregates;
+using ContactBookCQRS.Domain.Persistence;
 using ContactBookCQRS.Infra.Persistence.Context;
-using ContactBookCQRS.Infra.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

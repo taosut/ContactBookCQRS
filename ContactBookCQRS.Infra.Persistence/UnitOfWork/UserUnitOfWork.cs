@@ -1,7 +1,6 @@
-﻿using ContactBookCQRS.Domain.Interfaces;
-using ContactBookCQRS.Infra.CrossCutting.Identity.Models;
+﻿using ContactBookCQRS.Domain.Identity;
+using ContactBookCQRS.Domain.Persistence;
 using ContactBookCQRS.Infra.Persistence.Context;
-using ContactBookCQRS.Infra.Persistence.Repository;
 using System;
 using System.Collections.Generic;
 using System.Text;

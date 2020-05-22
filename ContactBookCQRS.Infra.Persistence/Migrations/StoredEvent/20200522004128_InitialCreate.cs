@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ContactBookCQRS.Infra.Persistence.Migrations.EventStore
+namespace ContactBookCQRS.Infra.Persistence.Migrations.StoredEvent
 {
-    public partial class EventStore : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,7 @@ namespace ContactBookCQRS.Infra.Persistence.Migrations.EventStore
                     Action = table.Column<string>(type: "varchar(100)", nullable: true),
                     AggregateId = table.Column<Guid>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
-                    Data = table.Column<string>(nullable: true),
+                    MetaData = table.Column<string>(nullable: true),
                     User = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

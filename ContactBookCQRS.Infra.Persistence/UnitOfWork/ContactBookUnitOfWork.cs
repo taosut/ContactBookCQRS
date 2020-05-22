@@ -1,4 +1,4 @@
-﻿using ContactBookCQRS.Domain.Interfaces;
+﻿using ContactBookCQRS.Domain.Persistence;
 using ContactBookCQRS.Infra.Persistence.Context;
 using ContactBookCQRS.Infra.Persistence.Repository;
 using System;

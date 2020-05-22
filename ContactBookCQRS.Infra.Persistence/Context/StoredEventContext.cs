@@ -1,4 +1,4 @@
-﻿using ContactBookCQRS.Domain.Core.Events;
+﻿using ContactBookCQRS.Domain.Events;
 using ContactBookCQRS.Infra.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,9 +7,9 @@ using System.Text;
 
 namespace ContactBookCQRS.Infra.Persistence.Context
 {
-    public class EventStoreContext : DbContext
+    public class StoredEventContext : DbContext
     {
-        public EventStoreContext(DbContextOptions<EventStoreContext> options) : base(options) 
+        public StoredEventContext(DbContextOptions<StoredEventContext> options) : base(options) 
         {
             Database.Migrate();
         }

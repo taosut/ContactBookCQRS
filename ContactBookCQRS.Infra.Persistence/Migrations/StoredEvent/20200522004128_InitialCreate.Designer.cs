@@ -4,14 +4,16 @@ using ContactBookCQRS.Infra.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace ContactBookCQRS.Infra.Persistence.Migrations.EventStore
+namespace ContactBookCQRS.Infra.Persistence.Migrations.StoredEvent
 {
-    [DbContext(typeof(EventStoreContext))]
-    partial class EventStoreContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(StoredEventContext))]
+    [Migration("20200522004128_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,7 +21,7 @@ namespace ContactBookCQRS.Infra.Persistence.Migrations.EventStore
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ContactBookCQRS.Domain.Core.Events.StoredEvent", b =>
+            modelBuilder.Entity("ContactBookCQRS.Domain.Events.StoredEvent", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -28,12 +30,12 @@ namespace ContactBookCQRS.Infra.Persistence.Migrations.EventStore
                     b.Property<Guid>("AggregateId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Data")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("MessageType")
                         .HasColumnName("Action")
                         .HasColumnType("varchar(100)");
+
+                    b.Property<string>("MetaData")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnName("CreationDate")

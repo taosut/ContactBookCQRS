@@ -1,13 +1,10 @@
-﻿using ContactBookCQRS.Domain.Interfaces;
-using ContactBookCQRS.Domain.Models;
+﻿using ContactBookCQRS.Domain.Identity;
+using ContactBookCQRS.Domain.Persistence;
 using ContactBookCQRS.Infra.CrossCutting.Identity.Models;
 using ContactBookCQRS.Infra.Persistence.Context;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+
 
 namespace ContactBookCQRS.Infra.Persistence.Repository
 {

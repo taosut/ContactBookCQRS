@@ -1,30 +1,30 @@
-﻿using ContactBookCQRS.Domain.Core.Events;
-using ContactBookCQRS.Domain.Core.Interfaces;
+﻿using ContactBookCQRS.Domain.Events;
+using ContactBookCQRS.Domain.Persistence;
 using ContactBookCQRS.Infra.Persistence.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ContactBookCQRS.Infra.Persistence.Repository.EventSourcing
+namespace ContactBookCQRS.Infra.Persistence.Repository
 {
     public class EventStoreRepository : IEventStoreRepository
     {
-        private readonly EventStoreContext _context;
+        private readonly StoredEventContext _context;
 
-        public EventStoreRepository(EventStoreContext context)
+        public EventStoreRepository(StoredEventContext context)
         {
             _context = context;
         }
 
-        public IList<StoredEvent> All(Guid aggregateId)
+        public IList<StoredEvent> GetByAggregateId(Guid aggregateId)
         {
             return _context.StoredEvents.Where(e => e.AggregateId == aggregateId).ToList();
         }
 
-        public void Store(StoredEvent theEvent)
+        public void SaveEvent(StoredEvent storedEvent)
         {
-            _context.StoredEvents.Add(theEvent);
+            _context.StoredEvents.Add(storedEvent);
             _context.SaveChanges();
         }
 
