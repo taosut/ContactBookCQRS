@@ -1,17 +1,17 @@
 ﻿using System.Threading.Tasks;
-using ContactBookCQRS.Domain.Core.Bus;
-using ContactBookCQRS.Domain.Core.Commands;
-using ContactBookCQRS.Domain.Core.Events;
+using ContactBookCQRS.Domain.CommandHandlers;
+using ContactBookCQRS.Domain.Commands;
+using ContactBookCQRS.Domain.Events;
 using MediatR;
 
 namespace ContactBookCQRS.Infra.CrossCutting.Bus
 {
-    public sealed class InMemoryBus : IMediatorHandler
+    public sealed class InMemoryBus : ICommandHandler, IEventHandler
     {
         private readonly IMediator _mediator;
-        private readonly IEventStore _eventStore;
+        private readonly IEventStoreService _eventStore;
 
-        public InMemoryBus(IEventStore eventStore, IMediator mediator)
+        public InMemoryBus(IEventStoreService eventStore, IMediator mediator)
         {
             _eventStore = eventStore;
             _mediator = mediator;
@@ -20,7 +20,7 @@ namespace ContactBookCQRS.Infra.CrossCutting.Bus
         public Task RaiseEvent<T>(T @event) where T : Event
         {
             if (!@event.MessageType.Equals("DomainNotification"))
-                _eventStore?.Save(@event);
+                _eventStore?.StoreEvent(@event);
 
             return _mediator.Publish(@event);
         }

@@ -9,7 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ContactBookCQRS.Domain.Core\ContactBookCQRS.Domain.Core.csproj" />
+    <ProjectReference Include="..\ContactBookCQRS.Domain\ContactBookCQRS.Domain.csproj" />
+    <ProjectReference Include="..\ContactBookCQRS.Infra.Persistence\ContactBookCQRS.Infra.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
