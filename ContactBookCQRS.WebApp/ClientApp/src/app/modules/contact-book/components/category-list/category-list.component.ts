@@ -8,6 +8,7 @@ import { ContactComponent } from '../contact/contact.component';
 import { ConfirmationDialogService } from 'app/core/services/confirmation-dialog.service';
 import { HistoryViewerComponent } from '../history-viewer/history-viewer.component';
 import { CategoryHistoryData } from 'app/core/models/CategoryHistoryData';
+import { NotificationService } from 'app/core/services/notification.service';
 
 @Component({
   selector: 'app-category-list',
@@ -37,7 +38,8 @@ export class CategoryListComponent implements OnInit {
   constructor(
     private categoryService: CategoryService,
     private resolver: ComponentFactoryResolver,
-    private confirmationDialogService: ConfirmationDialogService
+    private confirmationDialogService: ConfirmationDialogService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit() {
@@ -136,9 +138,10 @@ export class CategoryListComponent implements OnInit {
       if(confirmed && category) {
         this.categoryService.deleteCategory(category.id)
         .subscribe((result: any) => {
+          this.notificationService.showSuccess("Category successfully deleted!");
           this.loadCategoryList();
         },
-        error => console.error(error));
+        error => this.notificationService.showError(error));
       }
     })
     .catch();

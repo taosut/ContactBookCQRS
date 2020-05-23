@@ -42,7 +42,7 @@
           <fa-icon [icon]="faUser" (click)="addContact(category.id)"
             class="btn btn-light buttonCreateColor" title="Add contact"></fa-icon>
           <fa-icon [icon]="faHistory" (click)="showHistoryViewer(category.id)"
-            class="btn btn-light buttoHistoryColor" title="History"></fa-icon>
+            class="btn btn-light buttoHistoryColor" title="Categories event history"></fa-icon>
         </div>
 
         <input type="checkbox" id="category-{{i}}" (change)="toggle(category.id, $event)"/>

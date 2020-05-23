@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CategoryService } from '../../category.service';
 import { Category } from 'app/core/models/Category';
 import { AuthService } from 'app/core/services/auth.service';
+import { NotificationService } from 'app/core/services/notification.service';
 
 @Component({
   selector: 'app-category',
@@ -22,7 +23,8 @@ export class CategoryComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private categoryService: CategoryService,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.categoryForm = this.formBuilder.group({
@@ -68,9 +70,11 @@ export class CategoryComponent implements OnInit {
     this.categoryService.createCategory(this.category)
     .subscribe(
       data => {
+        this.notificationService.showSuccess("Category successfully created!");
         this.loadCategoryList.emit(this.category);
       },
       error => {
+        this.notificationService.showError(error);
         this.loading = false;
       });
   }
@@ -80,9 +84,11 @@ export class CategoryComponent implements OnInit {
     this.categoryService.updateCategory(this.category)
     .subscribe(
       data => {
+        this.notificationService.showSuccess("Category successfully saved!");
         this.loadCategoryList.emit();
       },
       error => {
+        this.notificationService.showError(error);
         this.loading = false;
       });
   }

@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ContactService } from '../../contact.service';
 import { ConfirmationDialogService } from 'app/core/services/confirmation-dialog.service';
 import { HistoryViewerComponent } from '../history-viewer/history-viewer.component';
+import { NotificationService } from 'app/core/services/notification.service';
 
 @Component({
   selector: 'app-contact',
@@ -32,7 +33,8 @@ export class ContactComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private contactService: ContactService,
               private resolver: ComponentFactoryResolver,
-              private confirmationDialogService: ConfirmationDialogService) { }
+              private confirmationDialogService: ConfirmationDialogService,
+              private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.contactForm = this.formBuilder.group({
@@ -104,9 +106,11 @@ export class ContactComponent implements OnInit {
     this.contactService.createContact(this.contact)
     .subscribe(
       data => {
+        this.notificationService.showSuccess("Contact successfully created!");
         this.reloadContacts.emit(this.contact.categoryId);
       },
       error => {
+        this.notificationService.showError(error);
         this.loading = false;
       });
   }
@@ -122,9 +126,11 @@ export class ContactComponent implements OnInit {
     this.contactService.updateContact(this.contact)
     .subscribe(
       data => {
+        this.notificationService.showSuccess("Contact successfully updated!");
         this.cancel();
       },
       error => {
+        this.notificationService.showError(error);
         this.loading = false;
       });
   }
@@ -136,9 +142,11 @@ export class ContactComponent implements OnInit {
         this.contactService.deleteContact(this.contact.id)
         .subscribe(
           data => {
+            this.notificationService.showSuccess("Contact successfully deleted!");
             this.reloadContacts.emit(this.contact.categoryId);
           },
           error => {
+            this.notificationService.showError(error);
             this.loading = false;
           });
       }

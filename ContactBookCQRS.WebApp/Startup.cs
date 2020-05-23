@@ -12,6 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ontactBookCQRS.WebApp.Controllers.Base;
 
+/// <summary>
+/// 2020 - Felipe Alberto | fealberto@gmail.com
+/// </summary>
 namespace ContactBookCQRS.WebApp
 {
     public class Startup

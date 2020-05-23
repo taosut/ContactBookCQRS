@@ -5,14 +5,14 @@
     <div class="row actions-menu" *ngIf="!isNewContact">
       <button type="button" class="btn btn-light buttonRemoveColor"
         (click)="deleteContact()">
-        <fa-icon [icon]="faMinusCircle"></fa-icon>
+        <fa-icon [icon]="faMinusCircle" title="Delete contact"></fa-icon>
       </button>
       <button type="button" class="btn btn-light buttonEditColor"
         (click)="setEditable()">
-        <fa-icon [icon]="faEdit"></fa-icon>
+        <fa-icon [icon]="faEdit" title="Edit contact"></fa-icon>
       </button>
       <fa-icon [icon]="faHistory" (click)="showHistoryViewer(contact.id)"
-          class="btn btn-light buttoHistoryColor" title="History"></fa-icon>
+          class="btn btn-light buttoHistoryColor" title="Contact event history"></fa-icon>
     </div>
 
     <div [ngClass]="{ 'contactFormContent': isNewContact }">

@@ -54,20 +54,27 @@ export class HistoryViewerComponent implements OnInit {
     error => console.error(error));
   }
 
-  getObjectKeys<T>(obj: T): any {
-    let keyList: any = [];
+  getObjectKeys<T>(obj: T): HistoryDataRow[] {
+    let keyList: HistoryDataRow[] = [];
     if(obj) {
       const objectKeys = Object.keys(obj) as Array<keyof T>;
+      let index = 1;
       objectKeys.forEach(key => {
         let record = new HistoryDataRow();
-        record.columnName = key.toString();
-        if(key === 'id')
+        if(key === "action")
           record.position = 0;
-        else if(key === 'action')
-          record.position = 1;
+        else
+          record.position = index;
 
+        record.columnName = key.toString();
+        index++;
         keyList.push(record);
       })
+
+      var action = keyList.filter(k => k.columnName == "id");
+      if(action.length > 0)
+        action[0].position = keyList.length + 1;
+
     }
     return keyList;
   }
