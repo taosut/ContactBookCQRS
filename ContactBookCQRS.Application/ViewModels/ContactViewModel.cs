@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,9 @@ namespace ContactBookCQRS.Application.ViewModels
 {
     public class ContactViewModel
     {
+        [JsonIgnore]
+        public Guid UserId { get; set; }
+
         [Key]
         public Guid Id { get; set; }
 

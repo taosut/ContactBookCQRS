@@ -38,9 +38,15 @@ namespace ContactBookCQRS.Infra.Persistence.Repository
             _dbContext.Contacts.Remove(contact);
         }
 
-        public Contact GetByEmail(string email)
+        public Contact GetByEmail(Guid userId, string email)
         {
-            return _dbContext.Contacts.AsNoTracking().FirstOrDefault(c => c.Email == email);
+            var query = from ct in _dbContext.Contacts
+                        join ca in _dbContext.Categories on ct.CategoryId equals ca.Id
+                        join cb in _dbContext.ContactBooks on ca.ContactBookId equals cb.Id
+                        where cb.UserId == userId && ct.Email == email
+                        select ct;
+
+            return query.AsNoTracking().FirstOrDefault();
         }
 
         public IQueryable<Contact> GetContacts(Guid userId, Guid categoryId)

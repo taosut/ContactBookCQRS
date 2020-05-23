@@ -8,9 +8,10 @@ namespace ContactBookCQRS.Domain.Commands
 {
     public class CreateNewContactCommand : ContactCommand
     {
-        public CreateNewContactCommand(Guid categoryId, string name, string email, 
+        public CreateNewContactCommand(Guid categoryId, Guid userId, string name, string email, 
             DateTime birthDate, string phoneNumber)
         {
+            UserId = userId;
             CategoryId = categoryId;
             Name = name;
             Email = email;

@@ -37,7 +37,7 @@ namespace ContactBookCQRS.Domain.CommandHandlers
             }
 
             // Checking if contact e-mail is already taken
-            if (null != _contactUnitOfWork.ContactsRepository.GetByEmail(request.Email))
+            if (null != _contactUnitOfWork.ContactsRepository.GetByEmail(request.UserId, request.Email))
             {
                 _eventHandler.RaiseEvent(new DomainNotification(request.MessageType, "The contact e-mail has already been taken."));
                 return Task.FromResult(false);
@@ -99,7 +99,7 @@ namespace ContactBookCQRS.Domain.CommandHandlers
                 request.BirthDate,
                 request.PhoneNumber);
 
-            var existingContact = _contactUnitOfWork.ContactsRepository.GetByEmail(request.Email);
+            var existingContact = _contactUnitOfWork.ContactsRepository.GetByEmail(request.UserId, request.Email);
 
             //Checking if the object is the same from db using this e-mail
             if (existingContact != null && 

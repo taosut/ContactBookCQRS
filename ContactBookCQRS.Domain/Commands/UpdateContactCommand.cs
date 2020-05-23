@@ -8,8 +8,9 @@ namespace ContactBookCQRS.Domain.Commands
 {
     public class UpdateContactCommand : ContactCommand
     {
-        public UpdateContactCommand(Guid contactId, string name, string email, DateTime birthDate)
+        public UpdateContactCommand(Guid contactId, Guid userId, string name, string email, DateTime birthDate)
         {
+            UserId = 
             Id = contactId;
             Name = name;
             Email = email;

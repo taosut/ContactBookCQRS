@@ -12,7 +12,7 @@ namespace ContactBookCQRS.Domain.Persistence
     {
         Task CreateContact(Contact entity, CancellationToken cancellationToken = default);
         void DeleteContact(Guid userId, Guid entityId, CancellationToken cancellationToken = default);
-        Contact GetByEmail(string email);
+        Contact GetByEmail(Guid userId, string email);
         IQueryable<Contact> GetContacts(Guid userId, Guid categoryId);
         void UpdateContact(Contact entity);
 

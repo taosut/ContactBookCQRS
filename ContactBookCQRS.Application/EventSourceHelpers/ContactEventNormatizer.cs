@@ -30,7 +30,9 @@ namespace ContactBookCQRS.Application.EventSourceHelpers
 
                 data.BirthDate = string.IsNullOrWhiteSpace(change.BirthDate) || 
                     change.BirthDate == last.BirthDate ? "" : change.BirthDate;
-                data.BirthDate = DateTime.Parse(data.BirthDate).ToString("yyyy'-'MM'-'dd' - 'HH':'mm':'ss");
+                data.BirthDate = !string.IsNullOrEmpty(data.BirthDate) ?
+                    DateTime.Parse(data.BirthDate).ToString("yyyy'-'MM'-'dd' - 'HH':'mm':'ss") :
+                    data.BirthDate;
 
                 data.PhoneNumber = string.IsNullOrWhiteSpace(change.PhoneNumber) || 
                     change.PhoneNumber == last.PhoneNumber ? "" : change.PhoneNumber;

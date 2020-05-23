@@ -45,7 +45,7 @@ namespace ContactBookCQRS.Infra.Persistence.Repository
                         where cb.UserId == userId
                         select ca;
 
-            return _dbContext.Categories;
+            return query;
         }
 
         public void UpdateCategory(Category entity)

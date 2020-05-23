@@ -18,10 +18,10 @@ namespace ContactBookCQRS.Application.AutoMapper
             .ConstructUsing(c => new UpdateCategoryCommand(c.Id, c.ContactBookId, c.Name));
 
             CreateMap<ContactViewModel, CreateNewContactCommand>()
-            .ConstructUsing(c => new CreateNewContactCommand(c.CategoryId, c.Name, c.Email, c.BirthDate, c.PhoneNumber));
+            .ConstructUsing(c => new CreateNewContactCommand(c.CategoryId, c.UserId, c.Name, c.Email, c.BirthDate, c.PhoneNumber));
 
             CreateMap<ContactViewModel, UpdateContactCommand>()
-            .ConstructUsing(c => new UpdateContactCommand(c.Id, c.Name, c.Email, c.BirthDate)); 
+            .ConstructUsing(c => new UpdateContactCommand(c.Id, c.UserId, c.Name, c.Email, c.BirthDate)); 
         }
     }
 }
