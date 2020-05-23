@@ -2,8 +2,7 @@
 <h4> (with SPA & Event Sourcing)</h4>
 
 <hr>
-This project was built to demonstrate how to implement CQRS and Event Sourcing using MediatR, designed with DDD and using the 
-following technologies:<br /><br />
+This project was built to demonstrate how to implement CQRS and Event Sourcing using the following technologies:<br /><br />
 
 <ul>
   <li>
@@ -67,7 +66,7 @@ This demo was designed following architectural patterns and conventions in order
     <ul>
       <li>
         Persistence implementation (Repositories and Unit of Work), Migrations, Contexts and Configurations for EF Core, Authorization
-       (Claims) and Services
+       (Claims) and Services, InMemoryBus for Commands and Event handlers
       </li>
     </ul>
   </li>
